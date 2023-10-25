@@ -1,9 +1,34 @@
 @use "../../styles/all";
 
 .chess-piece {
-  height: 100%;
-  width: 100%;
-  display:flex;
-  align-items: center;
-  justify-content: center;
+  height: 80%;
+  width: 80%;
+
+  position: relative;
+  border-radius: 8px;
+  background-color: all.$lightGrey;
+  @include all.shadow(3px, all.$shadowSoft);
+
+  .icon-container {
+    height: 70%;
+    width: 70%;
+    margin: 2px;
+    display: flex;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    font-size: all.$fontSize3;
+
+    background-color: all.$offWhite;
+    color: all.$black;
+  }
+
+  &.black {
+    background-color: all.$black;
+
+    .icon-container {
+      background-color: all.$nearBlack;
+      color: all.$white;
+    }
+  }
 }

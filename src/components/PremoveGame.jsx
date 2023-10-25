@@ -19,6 +19,7 @@ function PremoveGame(props) {
       row: 2,
       column: 3,
       type: PIECE_PAWN,
+      isBlack: true,
     },
     {
       id: uuid(),
@@ -54,7 +55,7 @@ function PremoveGame(props) {
         <div className="board-container">
           <ChessBoard
             pieces={pieces}
-            renderPiece={p => <ChessPiece type={p.type} />}
+            renderPiece={p => <ChessPiece piece={p} />}
             onClickSquare={handleClickSquare}
           />
         </div>
