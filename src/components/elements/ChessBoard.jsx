@@ -43,19 +43,19 @@ function ChessBoard(props) {
 
   const handleClickSquare = useCallback(
     (row, column) => {
-      const squareKey = getSquareKey(row, column)
-      setInteractedSquares(s => ({...s, [squareKey]: true}))
-      setTimer(
-        squareKey,
-        () => {
-          setInteractedSquares(s => {
-            const newSquares = {...s}
-            delete newSquares[squareKey]
-            return newSquares
-          })
-        },
-        500,
-      )
+      // const squareKey = getSquareKey(row, column)
+      // setInteractedSquares(s => ({...s, [squareKey]: true}))
+      // setTimer(
+      //   squareKey,
+      //   () => {
+      //     setInteractedSquares(s => {
+      //       const newSquares = {...s}
+      //       delete newSquares[squareKey]
+      //       return newSquares
+      //     })
+      //   },
+      //   500,
+      // )
       if (typeof props.onClickSquare === 'function') {
         props.onClickSquare(row, column)
       }

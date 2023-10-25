@@ -30,7 +30,6 @@ export function timeMSToParts(timeMS = 0) {
   const seconds = Math.floor((timeMS % 60000) / 1000)
   const milliseconds = Math.floor((timeMS % 1000) / 10)
 
-  // console.log(timeMS, minutes, seconds, milliseconds)
   return [minutes, seconds, milliseconds]
 }
 
