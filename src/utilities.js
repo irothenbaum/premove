@@ -45,34 +45,17 @@ export function timePartsToMS(minutes, seconds = 0, milliseconds = 0) {
 }
 
 /**
- * @param {QuickAction} a
- * @returns {boolean}
- */
-export function filterCompletedQuickActions(a) {
-  return (
-    !!a.icon &&
-    !!a.action &&
-    typeof a.magnitude === 'number' &&
-    a.magnitude >= 0
-  )
-}
-
-/**
- * @param {Object<string, string>} keyBindings
- * @param {string} action
- * @return {string|null}
- */
-export function getKeyBindForAction(keyBindings, action) {
-  const matching = Object.entries(keyBindings).find(
-    ([key, value]) => value === action,
-  )
-  return matching ? matching[0] : null
-}
-
-/**
  * @param {string} string
  * @return {string}
  */
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+/**
+ * @param {number?} length
+ * @return {string}
+ */
+export function getRandomString(length = 30) {
+  return [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
 }

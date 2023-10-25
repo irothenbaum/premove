@@ -1,54 +1,227 @@
-import React from 'react'
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import './ChessBoard.scss'
 import {constructClassString} from '../../utilities'
 import PropTypes from 'prop-types'
+import useDoOnceTimer from '../../hooks/useDoOnceTimer'
+
+// --------------------------------------------------------------------------------
 
 function Square(props) {
   return (
     <div
       className={constructClassString('chess-board-square', {
         black: props.isBlack,
+        bounce: props.bounce,
       })}
-      style={props.style}
-    />
+      style={props.style}>
+      <div className="chess-board-square-depth" />
+    </div>
   )
 }
 
 Square.propTypes = {
   isBlack: PropTypes.bool,
+  bounce: PropTypes.bool,
   style: PropTypes.object,
 }
 
+// --------------------------------------------------------------------------------
+
 function ChessBoard(props) {
-  const paddingTop = `${Math.round(100 / props.dimension)}%`
+  // by dividing width by number of pieces we determine the percentage width/height of each square to the board
+  const relativeDimensionRatio = Math.round(10000 / props.dimension) / 100
+  const relativeDimensionPercentage = `${relativeDimensionRatio}%`
+  const [interactedSquares, setInteractedSquares] = useState({})
+  const {setTimer} = useDoOnceTimer()
+
+  const handleClickSquare = useCallback(
+    (row, column) => {
+      const squareKey = getSquareKey(row, column)
+      setInteractedSquares(s => ({...s, [squareKey]: true}))
+      setTimer(
+        squareKey,
+        () => {
+          setInteractedSquares(s => {
+            const newSquares = {...s}
+            delete newSquares[squareKey]
+            return newSquares
+          })
+        },
+        500,
+      )
+      if (typeof props.onClickSquare === 'function') {
+        props.onClickSquare(row, column)
+      }
+    },
+    [props.onClickSquare],
+  )
 
   return (
     <div className={constructClassString('chess-board', props.className)}>
       {Array(props.dimension)
         .fill(null)
-        .map((_, i) => {
+        .map((_, row) => {
           return (
-            <div key={`${i}-row`} className="chess-board-row">
+            <div key={`${row}-row`} className="chess-board-row">
               {Array(props.dimension)
                 .fill(null)
-                .map((_, j) => {
+                .map((_, column) => {
+                  const squareKey = getSquareKey(row, column)
                   return (
                     <Square
-                      key={`${i}-${j}-square`}
-                      isBlack={(i + j) % 2 === 1}
-                      style={{paddingTop: paddingTop}}
+                      key={`${squareKey}-square`}
+                      isBlack={(row + column) % 2 === 1}
+                      bounce={interactedSquares[squareKey]}
+                      style={{paddingTop: relativeDimensionPercentage}}
                     />
                   )
                 })}
             </div>
           )
         })}
+      <div className="chess-board-pieces-container">
+        {props.pieces.map(piece => {
+          return (
+            <div
+              className="chess-board-piece-container"
+              key={piece.id}
+              style={{
+                top: `${relativeDimensionRatio * piece.row}%`,
+                left: `${relativeDimensionRatio * piece.column}%`,
+                width: relativeDimensionPercentage,
+                height: relativeDimensionPercentage,
+              }}>
+              {props.renderPiece(piece)}
+            </div>
+          )
+        })}
+      </div>
+
+      <BoardClickListener
+        dimension={props.dimension}
+        onClickSquare={handleClickSquare}
+      />
     </div>
   )
 }
 
+/**
+ * @typedef {Object} Piece
+ * @property {string} id
+ * @property {number} row (0-indexed)
+ * @property {number} column (0-indexed)
+ * @property {string} type
+ * @property {boolean?} isBlack
+ * @property {boolean?} isMovable
+ */
+
+/**
+ * @typedef {Object}
+ *
+ */
+
 ChessBoard.propTypes = {
+  renderPiece: PropTypes.func.isRequired,
   dimension: PropTypes.number,
+  pieces: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      row: PropTypes.number.isRequired,
+      column: PropTypes.number.isRequired,
+      type: PropTypes.string.isRequired,
+      isBlack: PropTypes.bool,
+      isMovable: PropTypes.bool,
+    }),
+  ),
+  onClickSquare: PropTypes.func,
+}
+
+ChessBoard.defaultProps = {
+  dimension: 8,
+  pieces: [],
 }
 
 export default ChessBoard
+
+// --------------------------------------------------------------------------------
+
+const BoardClickListener = memo(props => {
+  const squareSize = useRef(0)
+  const boardRef = useRef(null)
+
+  const handlePress = e => {
+    const {row, column} = getSquarePosition(e, squareSize.current)
+    if (typeof props.onClickSquare === 'function') {
+      props.onClickSquare(row, column)
+    }
+  }
+
+  useEffect(() => {
+    if (!boardRef.current) {
+      return
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      squareSize.current = boardRef.current.clientWidth / props.dimension
+    })
+    resizeObserver.observe(boardRef.current)
+
+    return () => resizeObserver.disconnect()
+  }, [props.dimension])
+
+  return (
+    <div
+      className="chess-board-click-listener"
+      onClick={handlePress}
+      ref={boardRef}
+    />
+  )
+})
+
+BoardClickListener.propTypes = {
+  onClickSquare: PropTypes.func,
+  dimension: PropTypes.number,
+}
+
+// --------------------------------------------------------------------------------
+// UTILITY FUNCTIONS
+
+/**
+ * @param {*} e
+ * @return {{x: number, y: number}}
+ */
+function getRelativePosition(e) {
+  return {
+    x: e.nativeEvent.offsetX,
+    y: e.nativeEvent.offsetY,
+  }
+}
+
+/**
+ * @param {*} e
+ * @param {number} squareSize
+ * @return {{column: number, row: number}}
+ */
+function getSquarePosition(e, squareSize) {
+  const {x, y} = getRelativePosition(e)
+  return {
+    row: Math.floor(y / squareSize),
+    column: Math.floor(x / squareSize),
+  }
+}
+
+/**
+ * @param {number} row
+ * @param {number} column
+ * @return {string}
+ */
+function getSquareKey(row, column) {
+  return `${row}-${column}`
+}

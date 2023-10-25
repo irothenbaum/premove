@@ -1,5 +1,7 @@
 @use "../../styles/all";
 
 .pawn {
-  
+  width: 50%;
+  border-radius: 8px;
+  background-color: all.$lightGrey;
 }

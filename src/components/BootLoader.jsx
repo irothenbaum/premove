@@ -11,9 +11,6 @@ function BootLoader(props) {
   const {setTimer} = useDoOnceTimer()
   const [isReady, setIsReady] = useState(null)
   const [isFading, setIsFading] = useState(false)
-  const [rotationAmount, setRotationAmount] = useState(
-    Math.round((Math.random() * 360) / 15) * 15,
-  )
 
   useEffect(() => {
     // TODO: revert this to false to have bootloader render
@@ -22,12 +19,6 @@ function BootLoader(props) {
 
   useEffect(() => {
     if (typeof isReady === 'boolean' && !isReady) {
-      const tick = () => {
-        setRotationAmount(r => r + 15)
-        setTimer('tick', tick, 1000)
-      }
-      tick()
-
       setTimer(
         'boot-loader-fase',
         () => {

@@ -1,62 +1,120 @@
 @use "../../styles/all";
 
-$verticalFace: 10px;
-$horizontalFace: 10px;
+$squareDepth: 10px;
 
 .chess-board {
-  box-shadow: $verticalFace $horizontalFace 30px 0 all.$shadow;
+  box-shadow: $squareDepth $squareDepth 30px 0 all.$shadowSoft;
   position: relative;
+
+  .chess-board-click-listener, .chess-board-pieces-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .chess-board-click-listener {
+    z-index: 100;
+  }
+
+  .chess-board-piece-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: top all.$transition, left all.$transition;
+  }
 
   .chess-board-row {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-
-    &:last-child {
-      .chess-board-square {
-        &:before {
-          content: '';
-          display: block;
-          height: $verticalFace;
-          width: 100%;
-          position: absolute;
-          bottom: -$verticalFace;
-          left: 0;
-        }
-
-        &:last-child:before {
-          width: calc(100% + $horizontalFace);
-        }
-      }
-    }
   }
 
   .chess-board-square {
     width: 100%;
     position: relative;
-
     background-color: all.$primaryColor;
-    &:after, &:before {
-      background-color: all.$primaryColorDark;
+
+    &:after {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background-color: inherit;
     }
+
+    .chess-board-square-depth {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 0;
+      top: $squareDepth;
+      left: $squareDepth;
+      background-color: all.$primaryColorDark;
+
+      &:after, &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: inherit;
+      }
+
+      &:after {
+        height: $squareDepth;
+        width: $squareDepth;
+        right: $squareDepth / 2;
+        top: -$squareDepth;
+        transform: skewX(45deg);
+        transition: box-shadow all.$transition;
+      }
+
+      &:before {
+        height: $squareDepth;
+        width: $squareDepth;
+        left: -$squareDepth / 2;
+        bottom: 0;
+        transform: skewX(45deg);
+      }
+    }
+
 
     &.black {
       background-color: all.$secondaryColor;
 
-      &:after, &:before {
+      .chess-board-square-depth {
         background-color: all.$secondaryColorDark;
       }
     }
 
-    &:last-child:after {
-      content: '';
-      display: block;
-      height: 100%;
-      width: $horizontalFace;
-      position: absolute;
-      right: -$horizontalFace;
-      top: 0;
+    &.bounce {
+      animation: pop-up 0.5s ease-in-out, shadow-fade 0.5s ease-in-out;
     }
+  }
+}
+
+
+@keyframes pop-up {
+  from {
+    transform: translate(-10%, -10%);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+$halfSquareDepth: $squareDepth / 2;
+@keyframes shadow-fade {
+  from {
+    box-shadow: $halfSquareDepth * 1.5 $halfSquareDepth * 1.5 $squareDepth $halfSquareDepth all.$shadow;
+  }
+  to {
+    box-shadow: $squareDepth $squareDepth 2px -2px all.$shadow;
   }
 }
