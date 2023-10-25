@@ -1,0 +1,62 @@
+@use '../../styles/all';
+
+.time-input {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+
+  .time-input-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    font-size: all.$fontSize3;
+
+    .number-input {
+      width: 40%;
+
+      input {
+        text-align: center;
+        width: 100%;
+        padding: 0;
+      }
+    }
+  }
+
+  .icon-container {
+    @include all.square-icon(36px);
+    font-size: all.$fontSize4;
+    background-color: all.$white;
+
+    &:first-child {
+      margin-right: all.$spaceMedium;
+    }
+
+    &:last-child {
+      margin-left: all.$spaceMedium;
+    }
+  }
+
+  &.changes {
+    .icon-container {
+      &:first-child {
+        border-color: all.$red;
+      }
+      &:last-child {
+        border-color: all.$green;
+        animation: pulse-green 0.5s alternate-reverse infinite;
+      }
+    }
+  }
+}
+
+@keyframes pulse-green {
+  from {
+    box-shadow: 0 0 2px 0 all.$green;
+  }
+  to {
+    box-shadow: 0 0 15px 0 all.$green;
+  }
+}

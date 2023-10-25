@@ -1,0 +1,30 @@
+@use "../styles/all";
+
+.premove-game {
+  height: 100%;
+  max-width: all.$screenLargeMax;
+  background-color: all.$lightGrey;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  @include all.small-and-below() {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .board-container {
+    height: 100%;
+    width: 100%;
+    padding: all.$spaceLarge;
+    max-width: 85vh;
+  }
+
+  .hud-container {
+    height: 100%;
+    padding: all.$spaceLarge;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

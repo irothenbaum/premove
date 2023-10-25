@@ -1,0 +1,26 @@
+@use "../../styles/all";
+
+.button-container {
+  button {
+    cursor: pointer;
+    font-size: all.$fontSize4;
+    @include all.input-box();
+    width: auto;
+    padding: all.$spaceExtraSmall all.$spaceMedium;
+
+    transition: all all.$transition;
+    &:hover {
+      background-color: all.$lightBlue;
+    }
+  }
+
+  &.disabled {
+    button {
+        cursor: not-allowed;
+        background-color: all.$offWhite;
+        &:hover {
+            background-color: all.$offWhite;
+        }
+    }
+  }
+}

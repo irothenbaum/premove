@@ -1,0 +1,8 @@
+@use '../../styles/all';
+
+.string-input {
+  width: 100%;
+  input {
+    @include all.input-box();
+  }
+}

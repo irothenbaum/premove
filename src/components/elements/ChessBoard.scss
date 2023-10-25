@@ -1,0 +1,62 @@
+@use "../../styles/all";
+
+$verticalFace: 10px;
+$horizontalFace: 10px;
+
+.chess-board {
+  box-shadow: $verticalFace $horizontalFace 30px 0 all.$shadow;
+  position: relative;
+
+  .chess-board-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    &:last-child {
+      .chess-board-square {
+        &:before {
+          content: '';
+          display: block;
+          height: $verticalFace;
+          width: 100%;
+          position: absolute;
+          bottom: -$verticalFace;
+          left: 0;
+        }
+
+        &:last-child:before {
+          width: calc(100% + $horizontalFace);
+        }
+      }
+    }
+  }
+
+  .chess-board-square {
+    width: 100%;
+    position: relative;
+
+    background-color: all.$primaryColor;
+    &:after, &:before {
+      background-color: all.$primaryColorDark;
+    }
+
+    &.black {
+      background-color: all.$secondaryColor;
+
+      &:after, &:before {
+        background-color: all.$secondaryColorDark;
+      }
+    }
+
+    &:last-child:after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: $horizontalFace;
+      position: absolute;
+      right: -$horizontalFace;
+      top: 0;
+    }
+  }
+}

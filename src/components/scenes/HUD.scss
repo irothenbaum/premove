@@ -1,0 +1,39 @@
+@use "../../styles/all";
+
+.hud {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h1 {
+    color: all.$darkGrey;
+    margin-bottom: all.$spaceExtraLarge;
+    font-size: all.$fontSize1;
+    text-shadow: 2px 2px 0 all.$nearBlack;
+  }
+
+  h2 {
+    color: all.$black;
+    margin-bottom: all.$spaceLarge;
+    font-size: all.$fontSize3;
+    line-height: 1.5em;
+
+    span {
+      display: inline-block;
+      padding-bottom: 0.2em;
+      padding-left: all.$spaceSmall;
+      color: all.$white;
+      font-size: 3rem;
+      text-shadow: 2px 2px 0 all.$grey, 0 0 30px all.$shadowSoft;
+      vertical-align: middle;
+    }
+  }
+
+
+  .spacer {
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+}

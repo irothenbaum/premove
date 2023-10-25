@@ -1,0 +1,19 @@
+@use "../../styles/all";
+
+
+.scoreboard {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: all.$offWhite;
+  border: 10px solid transparent;
+
+  &.game-clock-expired {
+    border-color: all.$red;
+    box-shadow: inset 0 0 50px 10px all.$red;
+  }
+}
