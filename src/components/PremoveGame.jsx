@@ -8,6 +8,8 @@ import GameContext from '../contexts/GameContext'
 import {PIECE_KNIGHT, PIECE_PAWN} from '../constants/chess'
 import ChessPiece from './elements/ChessPiece'
 
+const allowedKnightSquareChanges = [-2, -1, 1, 2]
+
 function PremoveGame(props) {
   const [level, setLevel] = useState(1)
   const [seed, setSeed] = useState(uuid())
@@ -26,6 +28,7 @@ function PremoveGame(props) {
       row: 5,
       column: 6,
       type: PIECE_KNIGHT,
+      isMovable: true,
     },
   ])
 
@@ -35,10 +38,28 @@ function PremoveGame(props) {
   }, [seed])
 
   const handleClickSquare = (row, column) => {
-    const targetPiece = pieces[1]
-    targetPiece.row = row
-    targetPiece.column = column
-    setPieces([pieces[0], targetPiece])
+    const playerPiece = pieces.find(p => p.isMovable)
+
+    if (!playerPiece) {
+      return
+    }
+
+    const diffRow = row - playerPiece.row
+    const diffColumn = column - playerPiece.column
+
+    // this is how we validated a knight move
+    if (
+      !allowedKnightSquareChanges.includes(diffRow) ||
+      !allowedKnightSquareChanges.includes(diffColumn) ||
+      Math.abs(diffRow) === Math.abs(diffColumn)
+    ) {
+      return
+    }
+
+    playerPiece.row = row
+    playerPiece.column = column
+
+    setPieces(pieces => [...pieces])
   }
 
   return (
