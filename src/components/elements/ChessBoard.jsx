@@ -1,16 +1,9 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
 import './ChessBoard.scss'
 import {constructClassString} from '../../utilities'
 import PropTypes from 'prop-types'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
-import {BOARD_SIZE} from '../../constants/chess'
+import {BOARD_SIZE, isSameSquare} from '../../constants/chess'
 
 // --------------------------------------------------------------------------------
 
@@ -43,7 +36,7 @@ function ChessBoard(props) {
   const {setTimer} = useDoOnceTimer()
 
   const handleClickSquare = useCallback(
-    (row, column) => {
+    square => {
       // const squareKey = getSquareKey(row, column)
       // setInteractedSquares(s => ({...s, [squareKey]: true}))
       // setTimer(
@@ -58,10 +51,19 @@ function ChessBoard(props) {
       //   500,
       // )
       if (typeof props.onClickSquare === 'function') {
-        props.onClickSquare(row, column)
+        props.onClickSquare(square)
       }
     },
     [props.onClickSquare],
+  )
+
+  const handleHoverSquare = useCallback(
+    square => {
+      if (typeof props.onHoverSquare === 'function') {
+        props.onHoverSquare(square)
+      }
+    },
+    [props.onHoverSquare],
   )
 
   return (
@@ -74,7 +76,7 @@ function ChessBoard(props) {
               {Array(props.dimension)
                 .fill(null)
                 .map((_, column) => {
-                  const squareKey = getSquareKey(row, column)
+                  const squareKey = getSquareKey({row, column})
                   return (
                     <Square
                       key={`${squareKey}-square`}
@@ -105,9 +107,10 @@ function ChessBoard(props) {
         })}
       </div>
 
-      <BoardClickListener
+      <BoardEventListener
         dimension={props.dimension}
         onClickSquare={handleClickSquare}
+        onHoverSquare={handleHoverSquare}
       />
     </div>
   )
@@ -128,6 +131,7 @@ ChessBoard.propTypes = {
   ),
   onClickSquare: PropTypes.func,
   onPlacePiece: PropTypes.func,
+  onHoverSquare: PropTypes.func,
 }
 
 ChessBoard.defaultProps = {
@@ -139,14 +143,28 @@ export default ChessBoard
 
 // --------------------------------------------------------------------------------
 
-const BoardClickListener = memo(props => {
+const BoardEventListener = memo(props => {
   const squareSize = useRef(0)
   const boardRef = useRef(null)
+  const lastHoveredSquare = useRef(null)
 
   const handlePress = e => {
-    const {row, column} = getSquarePosition(e, squareSize.current)
+    const thisSquare = getSquarePosition(e, squareSize.current)
     if (typeof props.onClickSquare === 'function') {
-      props.onClickSquare(row, column)
+      props.onClickSquare(thisSquare)
+    }
+  }
+
+  const handleMove = e => {
+    const thisSquare = getSquarePosition(e, squareSize.current)
+    if (
+      !lastHoveredSquare.current ||
+      !isSameSquare(lastHoveredSquare.current, thisSquare)
+    ) {
+      lastHoveredSquare.current = thisSquare
+      if (typeof props.onHoverSquare === 'function') {
+        props.onHoverSquare(lastHoveredSquare.current)
+      }
     }
   }
 
@@ -167,12 +185,13 @@ const BoardClickListener = memo(props => {
     <div
       className="chess-board-click-listener"
       onClick={handlePress}
+      onMouseMove={handleMove}
       ref={boardRef}
     />
   )
 })
 
-BoardClickListener.propTypes = {
+BoardEventListener.propTypes = {
   onClickSquare: PropTypes.func,
   dimension: PropTypes.number,
 }
@@ -194,7 +213,7 @@ function getRelativePosition(e) {
 /**
  * @param {*} e
  * @param {number} squareSize
- * @return {{column: number, row: number}}
+ * @return {Square}
  */
 function getSquarePosition(e, squareSize) {
   const {x, y} = getRelativePosition(e)
@@ -205,10 +224,9 @@ function getSquarePosition(e, squareSize) {
 }
 
 /**
- * @param {number} row
- * @param {number} column
+ * @param {Square} s
  * @return {string}
  */
-function getSquareKey(row, column) {
-  return `${row}-${column}`
+function getSquareKey(s) {
+  return `${s.row}-${s.column}`
 }

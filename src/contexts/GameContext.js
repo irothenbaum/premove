@@ -1,5 +1,5 @@
 import {contextFactor} from './shared'
-const GAME_CACHE_KEY = 'pre-move-game'
+const GAME_CACHE_KEY = 'premove-game'
 
 /**
  * @typedef {Object} GameContextData

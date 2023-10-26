@@ -1,0 +1,32 @@
+@use "../../styles/all";
+
+$highlightPrimary: rgba(0, 255, 150, 1);
+$highlightPrimaryTransparent: rgba(0, 255, 150, 0.2);
+$highlightSecondary: rgba(0, 0, 0, 0.3);
+
+.highlight-square {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $highlightPrimaryTransparent;
+  border: 4px solid $highlightPrimary;
+  @include all.shadow(20px, $highlightPrimary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: all.$fontSize1;
+  color: all.$shadowHard;
+
+  &.black {
+    height: 90%;
+    width: 90%;
+    top: 5%;
+    left: 5%;
+    border-radius: 50%;
+    background-color: $highlightSecondary;
+    box-shadow: none;
+    border: none;
+  }
+}
