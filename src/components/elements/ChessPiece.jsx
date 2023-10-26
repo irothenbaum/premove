@@ -10,20 +10,25 @@ const TYPE_TO_ICON = {
   [PIECE_KNIGHT]: KNIGHT,
 }
 
-function ChessPiece({piece}) {
+function ChessPiece(props) {
   return (
     <div
-      className={constructClassString('chess-piece', {black: piece.isBlack})}>
-      <Icon icon={TYPE_TO_ICON[piece.type]} />
+      className={constructClassString('chess-piece', {black: props.isBlack})}>
+      <div className="chess-piece-inner">
+        {props.moveCount ? (
+          <p className="move-count">{props.moveCount}</p>
+        ) : (
+          <Icon icon={TYPE_TO_ICON[props.type]} />
+        )}
+      </div>
     </div>
   )
 }
 
 ChessPiece.propTypes = {
-  piece: PropTypes.shape({
-    type: PropTypes.string,
-    isBlack: PropTypes.bool,
-  }),
+  type: PropTypes.string,
+  isBlack: PropTypes.bool,
+  moveCount: PropTypes.number,
 }
 
 export default ChessPiece

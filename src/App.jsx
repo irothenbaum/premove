@@ -1,9 +1,9 @@
 import './App.scss'
 import React from 'react'
-import PremoveGame from "./components/PremoveGame";
+import PremoveGameSeries from './components/PremoveGameSeries'
 
 function App() {
-  return <PremoveGame />
+  return <PremoveGameSeries />
 }
 
 export default App

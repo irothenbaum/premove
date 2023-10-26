@@ -10,6 +10,7 @@ import './ChessBoard.scss'
 import {constructClassString} from '../../utilities'
 import PropTypes from 'prop-types'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
+import {BOARD_SIZE} from '../../constants/chess'
 
 // --------------------------------------------------------------------------------
 
@@ -112,21 +113,6 @@ function ChessBoard(props) {
   )
 }
 
-/**
- * @typedef {Object} Piece
- * @property {string} id
- * @property {number} row (0-indexed)
- * @property {number} column (0-indexed)
- * @property {string} type
- * @property {boolean?} isBlack
- * @property {boolean?} isMovable
- */
-
-/**
- * @typedef {Object}
- *
- */
-
 ChessBoard.propTypes = {
   renderPiece: PropTypes.func.isRequired,
   dimension: PropTypes.number,
@@ -141,10 +127,11 @@ ChessBoard.propTypes = {
     }),
   ),
   onClickSquare: PropTypes.func,
+  onPlacePiece: PropTypes.func,
 }
 
 ChessBoard.defaultProps = {
-  dimension: 8,
+  dimension: BOARD_SIZE,
   pieces: [],
 }
 

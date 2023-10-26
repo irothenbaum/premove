@@ -1,12 +1,12 @@
 import React, {useContext} from 'react'
-import './HUD.scss'
+import './SeriesHUD.scss'
 import GameContext from '../../contexts/GameContext'
 
-function HUD(props) {
+function SeriesHUD(props) {
   const {level, score} = useContext(GameContext)
 
   return (
-    <div className="hud">
+    <div className="series-hud">
       <div className="spacer">
         <div>
           <h1>Premove</h1>
@@ -24,4 +24,4 @@ function HUD(props) {
   )
 }
 
-export default HUD
+export default SeriesHUD

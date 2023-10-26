@@ -22,28 +22,6 @@ export function constructClassString(...classes) {
 }
 
 /**
- * @param {number} timeMS
- * @returns {Array<number>}
- */
-export function timeMSToParts(timeMS = 0) {
-  const minutes = Math.floor(timeMS / 60000)
-  const seconds = Math.floor((timeMS % 60000) / 1000)
-  const milliseconds = Math.floor((timeMS % 1000) / 10)
-
-  return [minutes, seconds, milliseconds]
-}
-
-/**
- * @param {number} minutes
- * @param {number?} seconds
- * @param {number?} milliseconds
- * @return {number}
- */
-export function timePartsToMS(minutes, seconds = 0, milliseconds = 0) {
-  return minutes * 60000 + seconds * 1000 + milliseconds * 10
-}
-
-/**
  * @param {string} string
  * @return {string}
  */
@@ -52,9 +30,40 @@ export function capitalizeFirstLetter(string) {
 }
 
 /**
- * @param {number?} length
- * @return {string}
+ * @param {string} message
+ * @return {Promise<string>}
  */
-export function getRandomString(length = 30) {
-  return [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
+export async function sha256(message) {
+  // encode as UTF-8
+  const msgBuffer = new TextEncoder().encode(message)
+
+  // hash the message
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+
+  // convert ArrayBuffer to Array
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+
+  // convert bytes to hex string
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+  return hashHex
+}
+
+/**
+ * @param {string} seedStr
+ * @return {Promise<Generator>} // next().value is a number between 0 and 99
+ */
+export async function randomGenerator(seedStr) {
+  const sha = await sha256(seedStr)
+  const b64Code = btoa(sha)
+
+  function* generator() {
+    let i = 0
+    while (true) {
+      const num = b64Code.charCodeAt(i % b64Code.length) % 100
+      i++
+      yield num
+    }
+  }
+
+  return generator()
 }

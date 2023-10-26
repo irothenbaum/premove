@@ -9,7 +9,7 @@
   background-color: all.$lightGrey;
   @include all.shadow(3px, all.$shadowSoft);
 
-  .icon-container {
+  .chess-piece-inner {
     height: 70%;
     width: 70%;
     margin: 2px;
@@ -26,7 +26,7 @@
   &.black {
     background-color: all.$black;
 
-    .icon-container {
+    .chess-piece-inner {
       background-color: all.$nearBlack;
       color: all.$white;
     }
