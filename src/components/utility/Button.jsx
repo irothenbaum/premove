@@ -7,17 +7,18 @@ function Button(props) {
   return (
     <div
       className={constructClassString('button-container', props.className, {
+        secondary: !!props.isSecondary,
         disabled: !!props.disabled,
       })}>
       <button onClick={() => (props.disabled ? undefined : props.onClick())}>
-        {props.title}
+        {props.children}
       </button>
     </div>
   )
 }
 
 Button.propTypes = {
-  title: PropTypes.string.isRequired,
+  isSecondary: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   className: PropTypes.string,

@@ -48,7 +48,12 @@ function ToolTip(props) {
 
   return (
     <div
-      className={constructClassString('tooltip', anchorClass, props.className)}
+      className={constructClassString(
+        'tooltip',
+        anchorClass,
+        {hovered: props.isShown},
+        props.className,
+      )}
       title={props.withTitle ? props.label : undefined}
       onClick={props.onClick}>
       {props.children}
@@ -81,6 +86,7 @@ ToolTip.propTypes = {
   onClick: PropTypes.func,
   anchor: PropTypes.string,
   withTitle: PropTypes.bool,
+  isShown: PropTypes.bool,
 }
 
 export default ToolTip

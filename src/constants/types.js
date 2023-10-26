@@ -10,5 +10,6 @@
  * @property {string} id
  * @property {string} type
  * @property {boolean?} isMovable
- * @property {number?} moveCount
+ * @property {number?} startingMoveDelay
+ * @property {number?} currentMoveDelay
  */

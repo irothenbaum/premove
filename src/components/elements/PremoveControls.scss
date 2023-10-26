@@ -1,0 +1,21 @@
+@use '../../styles/all';
+
+.premove-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  & > * {
+    height: 100%;
+    flex: 1;
+  }
+
+  .button-container {
+    height: 100%;
+    width: 100%;
+
+    .icon-container {
+      font-size: all.$fontSize2;
+    }
+  }
+}

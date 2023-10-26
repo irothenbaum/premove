@@ -34,6 +34,7 @@ import {
   faFootball,
   faChessPawn,
   faChessKnight,
+  faRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle, faSquare} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
@@ -47,7 +48,7 @@ export const CHECK = faCheck
 export const CLOSE = faTimes
 export const PLAY = faPlay
 export const STOP = faPause
-export const RESET = faClockRotateLeft
+export const RESET = faRotateLeft
 export const EDIT = faPencil
 export const SETTINGS = faGear
 export const STOPWATCH = faStopwatch

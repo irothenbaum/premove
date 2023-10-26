@@ -15,13 +15,14 @@ import {
   isSameSquare,
 } from '../../constants/chess'
 import HighlightSquare from '../elements/HighlightSquare'
+import PremoveControls from '../elements/PremoveControls'
 
 function PremoveLevel(props) {
   const [isLoading, setIsLoading] = useState(true)
   const [pieces, setPieces] = useState([])
   /** @type {Array<Square>} */
   const [moves, setMoves] = useState([])
-  const [showHighlights, setShowHighlights] = useState(false)
+  const [hoveringPiece, setHoveringPiece] = useState(null)
 
   useEffect(() => {
     setMoves([])
@@ -68,8 +69,26 @@ function PremoveLevel(props) {
    * @param {Square} s
    */
   const handleHoverSquare = s => {
-    setShowHighlights(isSameSquare(s, playerPieceLatestMovePosition))
+    const hoveringPiece = pieces.find(p => isSameSquare(p, s))
+    setHoveringPiece(hoveringPiece)
+
+    if (
+      (!hoveringPiece && isSameSquare(s, playerPieceLatestMovePosition)) ||
+      (hoveringPiece && hoveringPiece.isMovable && moves.length === 0)
+    ) {
+      setHoveringPiece(s)
+    }
   }
+
+  const handleSubmitMoves = () => {
+    window.alert('MOVE')
+  }
+
+  const handleResetMoves = () => {
+    setMoves([])
+  }
+
+  const showHighlights = hoveringPiece && !hoveringPiece.id
 
   // we render not only the pieces, but also the moves the player has made and the squares that the player can move to
   const piecesToRender = pieces
@@ -96,26 +115,34 @@ function PremoveLevel(props) {
     )
 
   return (
-    <ChessBoard
-      dimension={BOARD_SIZE}
-      pieces={piecesToRender}
-      renderPiece={p => {
-        if (p.type === PIECE_SQUARE_HIGHLIGHT) {
-          return <HighlightSquare isBlack={p.isBlack} label={p.label} />
-        } else {
-          return (
-            <ChessPiece
-              type={p.type}
-              isBlack={p.isBlack}
-              moveCount={p.moveCount}
-            />
-          )
-        }
-      }}
-      onClickSquare={handleClickSquare}
-      onPlacePiece={handleClickSquare}
-      onHoverSquare={handleHoverSquare}
-    />
+    <div className="premove-level">
+      <ChessBoard
+        dimension={BOARD_SIZE}
+        pieces={piecesToRender}
+        renderPiece={p => {
+          if (p.type === PIECE_SQUARE_HIGHLIGHT) {
+            return <HighlightSquare isBlack={p.isBlack} label={p.label} />
+          } else {
+            return (
+              <ChessPiece
+                type={p.type}
+                isBlack={p.isBlack}
+                moveCount={p.startingMoveDelay}
+                isHovered={hoveringPiece && isSameSquare(p, hoveringPiece)}
+              />
+            )
+          }
+        }}
+        onClickSquare={handleClickSquare}
+        onPlacePiece={handleClickSquare}
+        onHoverSquare={handleHoverSquare}
+      />
+      <PremoveControls
+        isDisabled={moves.length === 0}
+        onReset={handleResetMoves}
+        onSubmit={handleSubmitMoves}
+      />
+    </div>
   )
 }
 
@@ -132,6 +159,14 @@ export default PremoveLevel
 // HELPER FUNCTIONS
 
 const PLAYER_ID = uuid()
+
+/**
+ * @param {{next: function}} rand
+ * @return {boolean}
+ */
+function flipCoin(rand) {
+  return rand.next().value % 2 === 0
+}
 
 /**
  * @param {number} level
@@ -154,6 +189,7 @@ export async function getBoardPiecesFromLevelAndSeed(level, seed, boardSize) {
         row: rand.next().value % (boardSize - 3),
         column: rand.next().value % boardSize,
         isBlack: true,
+        startingMoveDelay: 3, // flipCoin(rand) ? 0 : rand.next().value % numPawns,
       }
     } while (
       retVal.some(p => p.row === nextPiece.row && p.column === nextPiece.column)
@@ -166,7 +202,7 @@ export async function getBoardPiecesFromLevelAndSeed(level, seed, boardSize) {
     id: PLAYER_ID,
     type: PIECE_KNIGHT,
     row: 7,
-    column: rand.next().value % 2 === 0 ? 1 : 6,
+    column: flipCoin(rand) ? 1 : 6,
     isMovable: true,
   })
 

@@ -1,0 +1,9 @@
+@use '../../styles/all';
+
+.premove-level {
+  .premove-controls {
+    margin-top: all.$spaceLarge;
+    width: 100%;
+    height: all.$spaceExtraLarge;
+  }
+}

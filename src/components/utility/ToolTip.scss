@@ -27,8 +27,8 @@
 
   &.anchor-bottom, &.anchor-top {
     .tooltip-label-container {
-      left: 0;
-      width: 100%;
+      left: -50%;
+      width: 200%;
     }
   }
 
@@ -41,21 +41,21 @@
 
   &.anchor-top {
     .tooltip-label { bottom: -100%;}
-    &:hover { .tooltip-label { bottom: 0; } }
+    &:hover,&.hovered { .tooltip-label { bottom: 0; } }
   }
 
   &.anchor-bottom {
     .tooltip-label { top: -100%; }
-    &:hover { .tooltip-label { top: 0; } }
+    &:hover,&.hovered { .tooltip-label { top: 0; } }
   }
 
   &.anchor-left {
     .tooltip-label { right: -100%; }
-    &:hover { .tooltip-label { right: 0; } }
+    &:hover,&.hovered { .tooltip-label { right: 0; } }
   }
 
   &.anchor-right {
     .tooltip-label { left: -100%; }
-    &:hover { .tooltip-label { left: 0; } }
+    &:hover,&.hovered { .tooltip-label { left: 0; } }
   }
 }

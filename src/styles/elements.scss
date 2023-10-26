@@ -127,3 +127,23 @@
     transform: skewX(45deg);
   }
 }
+
+@mixin piece($child, $mainColor: colors.$offWhite, $shadeColor: colors.$lightGrey, $textColor: colors.$black, $depth: 15px) {
+  border-radius: 8px;
+  background-color: $shadeColor;
+  @include shadow(3px, colors.$shadowSoft);
+  padding: 2px;
+
+  #{$child} {
+    height: calc(100% - $depth);
+    width: calc(100% - $depth);
+    display: flex;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    font-size: typography.$fontSize3;
+
+    background-color: $mainColor;
+    color: $textColor;
+  }
+}

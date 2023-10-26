@@ -1,26 +1,45 @@
 @use "../../styles/all";
 
+$shiftAmount: 3px;
+
 .button-container {
+  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  cursor: pointer;
+
   button {
     cursor: pointer;
     font-size: all.$fontSize4;
-    @include all.input-box();
-    width: auto;
-    padding: all.$spaceExtraSmall all.$spaceMedium;
+    border: none;
+  }
 
+  &:hover {
+    transform: translate($shiftAmount, $shiftAmount);
+  }
+
+  &,button {
     transition: all all.$transition;
-    &:hover {
-      background-color: all.$lightBlue;
+  }
+
+  @include all.piece('button', all.$ctaColor, all.$ctaColorDark, all.$white);
+
+  &.secondary {
+    background-color: all.$ctaColorSecondaryDark;
+
+    button {
+      background-color: all.$ctaColorSecondary;
     }
   }
 
   &.disabled {
+    background-color: all.$darkGrey;
     button {
-        cursor: not-allowed;
-        background-color: all.$offWhite;
-        &:hover {
-            background-color: all.$offWhite;
-        }
+      cursor: not-allowed;
+      background-color: all.$grey;
+      color: all.$nearBlack;
+    }
+
+    &:hover {
+      transform: none !important;
     }
   }
 }
