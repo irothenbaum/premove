@@ -16,8 +16,8 @@ import SessionContext, {
 
 const difficultyToLevelMap = {
   [DIFFICULTY_EASY]: 1,
-  [DIFFICULTY_MODERATE]: 5,
-  [DIFFICULTY_HARD]: 16,
+  [DIFFICULTY_MODERATE]: 6,
+  [DIFFICULTY_HARD]: 20,
 }
 
 function PremoveGameDaily(props) {
@@ -26,13 +26,28 @@ function PremoveGameDaily(props) {
   const [difficulty, setDifficulty] = useState(DIFFICULTY_EASY)
   const [session, setSession] = useState(HydratedSession)
 
+  // right on mount we getTodayProgress so we know the session exists
+  useEffect(() => {
+    getTodayProgress()
+  }, [])
+
   // whenever state session changes, we flush
   useEffect(() => {
     flushSession(session)
   }, [session])
 
+  const getTodayProgress = () => {
+    if (!session[seed]) {
+      const newProgress = createDayProgressObject()
+      setSession({...session, [seed]: newProgress})
+      return newProgress
+    }
+
+    return session[seed]
+  }
+
   const handleClickSubmit = () => {
-    const todayProgress = session[seed] || createDayProgressObject()
+    const todayProgress = getTodayProgress()
     // we don't modify count if it was already solved
     if (todayProgress[difficulty].solved) {
       return
@@ -46,20 +61,18 @@ function PremoveGameDaily(props) {
    * @param {Array<Square>} moves
    */
   const handleWin = moves => {
-    setSession(s => {
-      const todayProgress = s[seed] || createDayProgressObject()
+    const todayProgress = getTodayProgress()
 
-      // we don't overwrite if it was already solved
-      if (todayProgress[difficulty].solved) {
-        return s
-      }
+    // we don't overwrite if it was already solved
+    if (todayProgress[difficulty].solved) {
+      return
+    }
 
-      // increase attempts count, mark the win, and set the moves array
-      todayProgress[difficulty].moves = moves
-      todayProgress[difficulty].solved = true
+    // increase attempts count, mark the win, and set the moves array
+    todayProgress[difficulty].moves = moves
+    todayProgress[difficulty].solved = true
 
-      return {...s, [seed]: todayProgress}
-    })
+    return setSession({...session, [seed]: todayProgress})
   }
 
   /**
@@ -69,12 +82,22 @@ function PremoveGameDaily(props) {
     // we don't actually need to do anything since we recorded the attempt when they clicked Submit
   }
 
-  const selectedDifficulty = session[seed]?.[difficulty]
+  if (!session[seed]) {
+    return null
+  }
+
+  const selectedDifficulty = session[seed][difficulty]
 
   return (
     <SessionContext.Provider
       value={{
-        progress: session[seed] || createDayProgressObject(),
+        progress: session[seed],
+        hasReadRules: session.hasReadRules,
+
+        setHasReadRules: () => {
+          setSession({...session, hasReadRules: true})
+        },
+        getTodayProgress: getTodayProgress,
       }}>
       <BootLoader />
       <div className="premove-game-daily">
@@ -104,7 +127,7 @@ export default PremoveGameDaily
  * @return {string}
  */
 function getTodaySeed() {
-  return moment().format('YYYY-MM-DD')
+  return moment().add(3, 'day').format('YYYY-MM-DD')
 }
 
 const difficultyResults = {attempts: 0, solved: false, moves: []}

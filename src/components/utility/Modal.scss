@@ -38,6 +38,10 @@
     background-color: all.$white;
     @include all.shadow();
 
+    @include all.medium-and-up {
+      max-width: 80%;
+    }
+
     .close-icon {
       @include all.hover-cta();
       font-size: all.$fontSize5;

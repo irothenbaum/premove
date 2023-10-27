@@ -24,6 +24,7 @@
       margin-top: all.$spaceSmall;
       margin-left: 4px;
       color: all.$grey;
+
     }
   }
 
@@ -35,21 +36,30 @@
       align-items: center;
       justify-content: space-between;
     }
+
+    .button-container {
+      margin-bottom: all.$spaceMedium;
+      button {
+        span {
+          &:last-child {
+            margin-left: all.$spaceSmall;
+          }
+        }
+      }
+    }
   }
 
   .button-container {
     height: all.$spaceExtraExtraLarge;
-    margin-bottom: all.$spaceMedium;
 
     button {
+      white-space: nowrap;
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      span {
-        &:last-child {
-          margin-left: all.$spaceSmall;
-        }
+      @include all.small-and-below {
+        font-size: all.$fontSize4;
       }
     }
 
@@ -66,10 +76,18 @@
       margin-right: all.$spaceMedium;
     }
 
+    .button-container {
+      margin-top: all.$spaceMedium;
+    }
+
     @include all.medium-and-below {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-top: all.$spaceLarge;
 
       .button-container {
+        margin-top: 0;
         display: inline-block;
       }
     }

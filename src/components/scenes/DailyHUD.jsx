@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import './DailyHUD.scss'
 import Button, {
   VARIANT_SECONDARY,
@@ -13,7 +13,10 @@ import {
   DIFFICULTY_HARD,
 } from '../../constants/game'
 import SessionContext from '../../contexts/SessionContext'
-import Icon, {SHARE, CHEVRON_RIGHT} from '../utility/Icon'
+import Icon, {SHARE, CHEVRON_RIGHT, INFO} from '../utility/Icon'
+import Modal from '../utility/Modal'
+import ShareResults from './ShareResults'
+import HowToPlay from './HowToPlay'
 
 const difficultyLabels = {
   [DIFFICULTY_EASY]: 'Easy',
@@ -22,10 +25,12 @@ const difficultyLabels = {
 }
 
 function DailyHUD(props) {
-  const {progress} = useContext(SessionContext)
+  const {progress, hasReadRules, setHasReadRules} = useContext(SessionContext)
+  const [showResultsModal, setShowResultsModal] = useState(false)
+  const [showInstructions, setShowInstructions] = useState(!hasReadRules)
 
   const handleShareResults = () => {
-    window.alert('Share results')
+    setShowResultsModal(true)
   }
 
   return (
@@ -63,6 +68,25 @@ function DailyHUD(props) {
           <Icon icon={SHARE} />
           Share results
         </Button>
+        <Button onClick={() => setShowInstructions(true)}>
+          <Icon icon={INFO} />
+          How to play
+        </Button>
+
+        <Modal
+          onClose={() => setShowResultsModal(false)}
+          isOpen={showResultsModal}>
+          <ShareResults />
+        </Modal>
+
+        <Modal
+          onClose={() => {
+            setShowInstructions(false)
+            setHasReadRules(true)
+          }}
+          isOpen={showInstructions}>
+          <HowToPlay />
+        </Modal>
       </div>
     </div>
   )

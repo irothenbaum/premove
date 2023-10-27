@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import {PIECE_KNIGHT, PIECE_PAWN, PIECE_QUEEN} from '../../constants/chess'
 import {constructClassString} from '../../utilities'
 import Icon, {PAWN, KNIGHT, QUEEN} from '../utility/Icon'
-import ToolTip from '../utility/ToolTip'
+import ToolTip, {ANCHOR_BOTTOM, ANCHOR_TOP} from '../utility/ToolTip'
 
 const TYPE_TO_ICON = {
   [PIECE_PAWN]: PAWN,
@@ -27,8 +27,9 @@ const ChessPiece = forwardRef(function ChessPiece(props, ref) {
     </div>
   )
 
-  return props.moveCount > 0 ? (
+  return props.moveCount > 0 && !props.noTooltip ? (
     <ToolTip
+      anchor={props.isTopRow ? ANCHOR_BOTTOM : ANCHOR_TOP}
       className="chess-piece-tool-tip"
       label={getLabelFromMoveCount(props.moveCount)}
       isShown={props.isHovered}>
@@ -58,6 +59,8 @@ ChessPiece.propTypes = {
   isBlack: PropTypes.bool,
   moveCount: PropTypes.number,
   isHovered: PropTypes.bool,
+  noTooltip: PropTypes.bool,
+  isTopRow: PropTypes.bool,
 }
 
 export default ChessPiece

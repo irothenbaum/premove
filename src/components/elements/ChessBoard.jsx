@@ -5,6 +5,12 @@ import PropTypes from 'prop-types'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import {BOARD_SIZE, isSameSquare} from '../../constants/chess'
 
+const ANIMATE_TIMER = 'animate-timer'
+const ANIMATE_DELAY = 100
+const RE_ANIMATE_DELAY = 2000
+
+const lookBackAmount = 5
+
 // --------------------------------------------------------------------------------
 
 function Square(props) {
@@ -35,23 +41,52 @@ function ChessBoard(props) {
   const relativeDimensionRatio = Math.round(10000 / props.dimension) / 100
   const relativeDimensionPercentage = `${relativeDimensionRatio}%`
   const [interactedSquares, setInteractedSquares] = useState({})
-  const {setTimer} = useDoOnceTimer()
+  const {setTimer, cancelAllTimers} = useDoOnceTimer()
+  /*
+DOESN'T WORK RIGHT YET -- cannot be disabled once enabled :/
+  // this is the idle animation logic
+  useEffect(() => {
+    if (!props.animatePattern) {
+      cancelAllTimers()
+      setInteractedSquares({})
+      return
+    }
+
+    let index = 0
+    const animateInterval = () => {
+      const indexCopy = index
+      setInteractedSquares(iS => {
+        const merged = (props.animatePattern[indexCopy] || []).reduce(
+          (agr, s) => ({...agr, [getSquareKey(s)]: true}),
+          iS,
+        )
+
+        if (indexCopy >= lookBackAmount) {
+          const toResetIndex =
+            (indexCopy - lookBackAmount) % props.animatePattern.length
+          ;(props.animatePattern[toResetIndex] || []).forEach(s => {
+            delete merged[getSquareKey(s)]
+          })
+        }
+
+        return merged
+      })
+      index++
+
+      if (index >= props.animatePattern.length + lookBackAmount) {
+        index = 0
+        setTimer(ANIMATE_TIMER, animateInterval, RE_ANIMATE_DELAY)
+      } else {
+        setTimer(ANIMATE_TIMER, animateInterval, ANIMATE_DELAY)
+      }
+    }
+
+    setTimer(ANIMATE_TIMER, animateInterval, RE_ANIMATE_DELAY)
+  }, [props.animatePattern])
+*/
 
   const handleClickSquare = useCallback(
     square => {
-      // const squareKey = getSquareKey(square)
-      // setInteractedSquares(s => ({...s, [squareKey]: true}))
-      // setTimer(
-      //   squareKey,
-      //   () => {
-      //     setInteractedSquares(s => {
-      //       const newSquares = {...s}
-      //       delete newSquares[squareKey]
-      //       return newSquares
-      //     })
-      //   },
-      //   500,
-      // )
       if (typeof props.onClickSquare === 'function') {
         props.onClickSquare(square)
       }
@@ -144,6 +179,14 @@ ChessBoard.propTypes = {
   onClickSquare: PropTypes.func,
   onPlacePiece: PropTypes.func,
   onHoverSquare: PropTypes.func,
+  animatePattern: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.shape({row: PropTypes.number, column: PropTypes.number}),
+    ),
+    // e.g.,: [ [ {row: 1, column: 3}, ... ] ]
+    // where each array of squares indicate which should animate at the same time
+    // and each array of those arrays indicates which squares should animate over time
+  ),
 }
 
 ChessBoard.defaultProps = {

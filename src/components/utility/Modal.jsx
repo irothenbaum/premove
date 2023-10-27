@@ -16,7 +16,8 @@ function Modal(props) {
         <span className="close-icon" onClick={props.onClose}>
           close <Icon icon={CLOSE} />
         </span>
-        {props.children}
+        {/* Only render children if we're open */}
+        {props.isOpen && props.children}
       </div>
     </div>,
     document.body,

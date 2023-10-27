@@ -38,6 +38,8 @@ import {
   faShare,
   faChessQueen,
   faChessKing,
+  faCircleInfo,
+  faClipboard,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle, faSquare} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
@@ -49,35 +51,17 @@ export const CHEVRON_DOWN = faChevronDown
 export const SPINNER = faSpinner
 export const CHECK = faCheck
 export const CLOSE = faTimes
-export const PLAY = faPlay
-export const STOP = faPause
 export const RESET = faRotateLeft
-export const EDIT = faPencil
 export const SETTINGS = faGear
-export const STOPWATCH = faStopwatch
-export const PLUS = faPlus
-export const HOURGLASS_1 = faHourglass
-export const HOURGLASS_2 = faHourglassStart
-export const HOURGLASS_3 = faHourglassHalf
-export const HOURGLASS_4 = faHourglassEnd
-export const CLOCK = faClock
-export const CIRCLE = faCircle
-export const SQUARE = faSquare
-export const BASKETBALL = faBasketball
-export const WATER_POLO = faVolleyball
-export const MEDAL = faMedal
-export const HOCKEY = faHockeyPuck
-export const BASEBALL = faBaseball
-export const STOPWATCH_20 = faStopwatch20
-export const SOCCER = faFutbol
-export const BOWLING = faBowlingBall
-export const FOOTBALL = faFootball
 export const CHESS = faChess
 export const PAWN = faChessPawn
 export const KNIGHT = faChessKnight
 export const QUEEN = faChessQueen
 export const SHARE = faShare
 export const KING = faChessKing
+export const INFO = faCircleInfo
+
+export const CLIPBOARD = faClipboard
 
 function Icon(props) {
   return (

@@ -34,6 +34,7 @@ function useDoOnceTimer() {
 
   const cancelAllTimers = () => {
     Object.values(timers).forEach(clearTimeout)
+    setTimers({})
   }
 
   const isTimerSet = key => {

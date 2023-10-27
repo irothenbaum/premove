@@ -59,7 +59,7 @@ function PremoveLevel(props) {
   // if seed of level change we reset the board
   useEffect(() => {
     resetBoard()
-  }, [props.seed, props.level])
+  }, [props.seed, props.level, props.initializeMoves])
 
   // find the player piece
   const playerPiece = pieces.find(p => p.isMovable)
@@ -132,10 +132,11 @@ function PremoveLevel(props) {
               if (nextRow === BOARD_SIZE - 1) {
                 piece.type = PIECE_QUEEN
               }
-            }
 
-            // since at this point they "moved", we reset their move delay
-            piece.currentMoveDelay = piece.startingMoveDelay
+              // since at this point they "moved", we reset their move delay
+              // if it's their turn to move, but they haven't moved yet, we won't reset the counter
+              piece.currentMoveDelay = piece.startingMoveDelay
+            }
           }
 
           return piece
@@ -222,7 +223,9 @@ function PremoveLevel(props) {
     setHoveringPiece(hoveringPiece)
 
     if (
-      (!hoveringPiece && isSameSquare(s, playerPieceLatestMovePosition)) ||
+      (!hoveringPiece &&
+        playerPieceLatestMovePosition &&
+        isSameSquare(s, playerPieceLatestMovePosition)) ||
       (hoveringPiece && hoveringPiece.isMovable && moves.length === 0)
     ) {
       setHoveringPiece(s)
@@ -306,6 +309,7 @@ function PremoveLevel(props) {
                   type={p.type}
                   isBlack={p.isBlack}
                   moveCount={p.currentMoveDelay}
+                  isTopRow={p.row === 0}
                   isHovered={hoveringPiece && isSameSquare(p, hoveringPiece)}
                 />
               )
@@ -315,6 +319,7 @@ function PremoveLevel(props) {
         onClickSquare={handleClickSquare}
         onPlacePiece={handleClickSquare}
         onHoverSquare={handleHoverSquare}
+        // animatePattern={!props.level ? IDLE_ANIMATE_PATTERN_FINAL : undefined}
       />
       <PremoveControls
         hasMoves={moves.length > 0}
@@ -361,6 +366,10 @@ function flipCoin(rand) {
  * @returns {Promise<Array<Piece>>}
  */
 export async function getBoardPiecesFromLevelAndSeed(level, seed, boardSize) {
+  if (!level) {
+    return []
+  }
+
   const rand = await randomGenerator(`${seed}-${level}`)
   const retVal = []
   // we don't want them starting any closer than 3 rows from the end

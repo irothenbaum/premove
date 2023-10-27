@@ -62,6 +62,12 @@ $halfSquareDepth: $squareDepth / 2;
       color: all.$shadow;
       font-size: all.$fontSize5;
       z-index: 10;
+
+      @include all.medium-and-below {
+        bottom: all.$spaceExtraSmall;
+        left: all.$spaceExtraSmall;
+        font-size: 0.6rem;
+      }
     }
 
     &:after {

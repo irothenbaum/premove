@@ -1,0 +1,67 @@
+@use "../../styles/all";
+
+.share-results-container {
+  padding: all.$spaceMedium;
+
+  h2 {
+    margin-bottom: all.$spaceSmall;
+  }
+  h1 {
+    font-size: all.$fontSize2;
+
+    @include all.small-and-below{
+      font-size: all.$fontSize3;
+    }
+  }
+
+  .share-results-content {
+    margin-top: all.$spaceLarge;
+
+    .result {
+      display: flex;
+      margin-bottom: all.$spaceMedium;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: all.$fontFamilyBody;
+      text-transform: none;
+
+      &:before {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+        margin-right: all.$spaceMedium;
+        background-color: #c00000;
+      }
+
+      &.solved:before {
+        background-color: #00c500;
+      }
+
+      span {
+        margin: 0 all.$spaceSmall;
+        font-family: all.$fontFamilyRegular;
+      }
+    }
+  }
+
+  .share-button-container {
+    margin-top: all.$spaceLarge;
+    display: flex;
+    justify-content: center;
+
+    .button-container {
+      @include all.shadow()
+    }
+
+    button {
+      padding: all.$spaceMedium all.$spaceLarge;
+      .icon-container {
+        margin-right: all.$spaceSmall;
+      }
+
+      white-space: nowrap;
+    }
+  }
+}

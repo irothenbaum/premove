@@ -42,6 +42,10 @@ $transition: 0.3s ease-out;
 
       .icon-container, .sad-face {
         font-size: 10em;
+
+        @include all.medium-and-below {
+          font-size: 8em;
+        }
       }
     }
   }

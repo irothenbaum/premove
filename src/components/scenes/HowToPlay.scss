@@ -1,0 +1,83 @@
+@use "../../styles/all";
+
+.how-to-play-container {
+  font-family: all.$fontFamilyBody;
+  text-transform: none;
+  line-height: 1.5em;
+
+  .how-to-play-inner {
+    max-height: 60vh;
+    overflow-y: scroll;
+    padding: all.$spaceLarge 0;
+  }
+
+  h1 {
+    font-size: all.$fontSize2;
+
+    span {
+      font-family: all.$fontFamilyRegular;
+      text-transform: uppercase;
+    }
+  }
+
+  h3 {
+    font-family: all.$fontFamilyRegular;
+    text-transform: uppercase;
+    font-size: all.$fontSize3;
+    margin-bottom: all.$spaceMedium;
+  }
+  .section {
+    margin-top: all.$spaceLarge;
+    border-top: 1px solid all.$lightGrey;
+    padding-top: all.$spaceLarge;
+
+    &:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border: none;
+    }
+  }
+
+  .chess-piece {
+    display: inline-block;
+    height: 4rem;
+    font-family: all.$fontFamilyRegular;
+    width: 4rem;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    margin-bottom: all.$spaceMedium;
+    position: relative;
+    padding-left: all.$spaceLarge;
+
+    &:before {
+      position: absolute;
+      left: all.$spaceSmall;
+      content: "";
+      display: block;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-radius: 50%;
+      margin-right: all.$spaceSmall;
+      background-color: all.$black;
+    }
+
+    em {
+      font-style: italic;
+      font-size: all.$fontSize5;
+    }
+
+    strong {
+      font-weight: bold;
+      margin-right: all.$spaceMedium;
+    }
+  }
+
+  p {
+    strong {
+      font-weight: bold;
+    }
+  }
+}

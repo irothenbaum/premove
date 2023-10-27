@@ -13,3 +13,23 @@
  * @property {number?} startingMoveDelay
  * @property {number?} currentMoveDelay
  */
+
+/**
+ * @typedef {Object} SessionContextData
+ * @property {Object<string, DailyProgress>} progress // keyed by date string
+ */
+
+/**
+ * @typedef {Object} DailyProgress
+ * @property {GameProgress} easy
+ * @property {GameProgress} moderate
+ * @property {GameProgress} hard
+ *
+ */
+
+/**
+ * @typedef {Object} GameProgress
+ * @property {number} attempts
+ * @property {boolean} solved
+ * @property {Array<Square>} moves
+ */
