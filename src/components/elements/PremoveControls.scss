@@ -1,13 +1,14 @@
 @use '../../styles/all';
 
 .premove-controls {
+  height: all.$spaceExtraExtraLarge;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 
   & > * {
     height: 100%;
-    flex: 1;
+    width: 25%;
   }
 
   .button-container {
@@ -16,6 +17,15 @@
 
     .icon-container {
       font-size: all.$fontSize2;
+    }
+  }
+
+  @include all.small-and-below {
+    height: all.$spaceExtraLarge;
+    justify-content: space-between;
+
+    & > * {
+      width: 40%;
     }
   }
 }

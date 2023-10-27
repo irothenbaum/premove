@@ -1,6 +1,6 @@
 @use "../styles/all";
 
-.premove-game-series {
+.premove-game-daily {
   height: 100%;
   max-width: all.$screenLargeMax;
   margin: 0 auto;
@@ -17,7 +17,6 @@
 
   .hud-container {
     height: 100%;
-    width: 100%;
     padding: all.$spaceLarge;
     display: flex;
     flex-direction: column;
@@ -26,7 +25,7 @@
 
   @include all.medium-and-below() {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
 
     .board-container {
@@ -35,7 +34,10 @@
     }
 
     .hud-container {
+      width: 100%;
       height: auto;
+      padding: all.$spaceMedium;
+      margin-bottom: all.$spaceExtraLarge;
     }
   }
 }

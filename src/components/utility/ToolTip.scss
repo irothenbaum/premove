@@ -23,6 +23,11 @@
       background-color: all.$black;
       font-size: all.$fontSize5;
     }
+
+    @include all.small-and-below {
+      // no tool tips on mobile
+      display: none !important;
+    }
   }
 
   &.anchor-bottom, &.anchor-top {

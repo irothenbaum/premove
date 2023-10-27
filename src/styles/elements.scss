@@ -95,39 +95,6 @@
   }
 }
 
-@mixin depth-box($depth: 10px) {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 0;
-  top: $depth;
-  left: $depth;
-
-  &:after, &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    background-color: inherit;
-  }
-
-  &:after {
-    height: $depth;
-    width: $depth;
-    right: $depth / 2;
-    top: -$depth;
-    transform: skewX(45deg);
-    transition: box-shadow constants.$transition;
-  }
-
-  &:before {
-    height: $depth;
-    width: $depth;
-    left: -$depth / 2;
-    bottom: 0;
-    transform: skewX(45deg);
-  }
-}
-
 @mixin piece($child, $mainColor: colors.$offWhite, $shadeColor: colors.$lightGrey, $textColor: colors.$black, $depth: 15px) {
   border-radius: 8px;
   background-color: $shadeColor;
@@ -145,5 +112,16 @@
 
     background-color: $mainColor;
     color: $textColor;
+
+    @include layout.medium-and-below {
+      height: calc(100% - #{$depth / 2});
+      width: calc(100% - #{$depth / 2});
+    }
+
+    @include layout.small-and-below {
+      height: 100%;
+      width: 100%;
+    }
   }
+
 }

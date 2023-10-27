@@ -10,10 +10,13 @@ $shiftAmount: 3px;
     cursor: pointer;
     font-size: all.$fontSize4;
     border: none;
+    padding: all.$spaceSmall all.$spaceMedium;
   }
 
-  &:hover {
-    transform: translate($shiftAmount, $shiftAmount);
+  @include all.medium-and-up {
+    &:hover {
+      transform: translate($shiftAmount, $shiftAmount);
+    }
   }
 
   &,button {
@@ -30,8 +33,17 @@ $shiftAmount: 3px;
     }
   }
 
+  &.tertiary {
+    background-color: all.$ctaColorTertiaryDark;
+
+    button {
+      background-color: all.$ctaColorTertiary;
+    }
+  }
+
   &.disabled {
     background-color: all.$darkGrey;
+    cursor: not-allowed;
     button {
       cursor: not-allowed;
       background-color: all.$grey;

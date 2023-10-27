@@ -1,9 +1,9 @@
 import './App.scss'
 import React from 'react'
-import PremoveGameSeries from './components/PremoveGameSeries'
+import PremoveGameDaily from './components/PremoveGameDaily'
 
 function App() {
-  return <PremoveGameSeries />
+  return <PremoveGameDaily />
 }
 
 export default App

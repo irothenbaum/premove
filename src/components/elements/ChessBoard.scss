@@ -3,8 +3,21 @@
 $squareDepth: 10px;
 $halfSquareDepth: $squareDepth / 2;
 
+:root {
+  --depth: #{$squareDepth};
+  --half-depth: #{$squareDepth / 2};
+}
+
+@include all.small-and-below {
+  :root {
+    --depth: #{$squareDepth / 2};
+    --half-depth: #{$squareDepth / 4};
+  }
+}
+
 .chess-board {
-  box-shadow: $squareDepth $squareDepth 30px 0 all.$shadowSoft;
+  box-shadow: var(--depth) var(--depth) 30px 0 all.$shadowSoft;
+
   position: relative;
 
   .chess-board-click-listener, .chess-board-pieces-container {
@@ -53,7 +66,36 @@ $halfSquareDepth: $squareDepth / 2;
 
     .chess-board-square-depth {
       background-color: all.$primaryColorDark;
-      @include all.depth-box($squareDepth);
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 0;
+      top: var(--depth);
+      left: var(--depth);
+
+      &:after, &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: inherit;
+      }
+
+      &:after {
+        height: var(--depth);
+        width: var(--depth);
+        right: var(--half-depth);
+        top: calc(var(--depth) * -1);
+        transform: skewX(45deg);
+        transition: box-shadow all.$transition;
+      }
+
+      &:before {
+        height: var(--depth);
+        width: var(--depth);
+        left: calc(var(--half-depth) * -1);
+        bottom: 0;
+        transform: skewX(45deg);
+      }
     }
 
 
@@ -83,9 +125,9 @@ $halfSquareDepth: $squareDepth / 2;
 
 @keyframes shadow-fade {
   from {
-    box-shadow: 0 0 $squareDepth 0 all.$shadowSoft, $squareDepth $squareDepth $halfSquareDepth $halfSquareDepth all.$shadowSoft;
+    box-shadow: 0 0 var(--depth) 0 all.$shadowSoft, var(--depth) var(--depth) var(--half-depth) var(--half-depth) all.$shadowSoft;
   }
   to {
-    box-shadow: 0 0 0 0 transparent, $squareDepth $squareDepth 2px -2px transparent;
+    box-shadow: 0 0 0 0 transparent, var(--depth) var(--depth) 2px -2px transparent;
   }
 }

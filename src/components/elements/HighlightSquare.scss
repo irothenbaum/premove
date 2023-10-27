@@ -29,4 +29,14 @@ $highlightSecondary: rgba(0, 0, 0, 0.3);
     box-shadow: none;
     border: none;
   }
+
+  @include all.medium-and-below{
+    font-size: all.$fontSize2;
+  }
+
+  @include all.small-and-below {
+    border-width: 2px;
+    @include all.shadow(10px, $highlightPrimary);
+    font-size: all.$fontSize3;
+  }
 }

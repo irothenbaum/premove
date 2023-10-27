@@ -1,5 +1,5 @@
-$spaceExtraExtraLarge: 6.5rem;
-$spaceExtraLarge: 4rem;
+$spaceExtraExtraLarge: 4rem;
+$spaceExtraLarge: 3rem;
 $spaceLarge: 2rem;
 $spaceMediumLarge: 1.5rem;
 $spaceMedium: 1rem;
@@ -29,6 +29,12 @@ $borderRadiusSmall: 4px;
 
 @mixin large-and-up {
   @media screen and (min-width: $screenLargeMin) {
+    @content;
+  }
+}
+
+@mixin medium-and-up {
+  @media screen and (min-width: $screenMediumMin) {
     @content;
   }
 }

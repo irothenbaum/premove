@@ -14,7 +14,7 @@ function flush(cacheKey, obj) {
  * @param {string} cacheKey
  * @returns {[React.Context, *, (object: *) => void]}
  */
-export function contextFactor(initialState, cacheKey) {
+export function contextFactory(initialState, cacheKey) {
   // hydrate from our stored value
   const storedValue = localStorage[cacheKey]
 

@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import BootLoader from './BootLoader'
 import './PremoveGameSeries.scss'
-import GameContext from '../contexts/GameContext'
 import SeriesHUD from './scenes/SeriesHUD'
 import PremoveLevel from './scenes/PremoveLevel'
 import {v4 as uuid} from 'uuid'
@@ -20,11 +19,7 @@ function PremoveGameSeries(props) {
   }
 
   return (
-    <GameContext.Provider
-      value={{
-        level,
-        score,
-      }}>
+    <React.Fragment>
       <BootLoader />
       <div className="premove-game-series">
         <div className="board-container">
@@ -36,10 +31,10 @@ function PremoveGameSeries(props) {
           />
         </div>
         <div className="hud-container">
-          <SeriesHUD />
+          <SeriesHUD level={level} score={score} />
         </div>
       </div>
-    </GameContext.Provider>
+    </React.Fragment>
   )
 }
 

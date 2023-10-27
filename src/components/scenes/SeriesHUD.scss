@@ -8,9 +8,14 @@
 
   h1 {
     color: all.$darkGrey;
-    margin-bottom: all.$spaceExtraLarge;
+    margin-bottom: all.$spaceExtraExtraLarge;
     font-size: all.$fontSize1;
     text-shadow: 2px 2px 0 all.$nearBlack;
+
+    @include all.medium-and-below{
+      font-size: all.$fontSize2;
+      margin-bottom: all.$spaceLarge;
+    }
   }
 
   h2 {
@@ -27,6 +32,10 @@
       font-size: 3rem;
       text-shadow: 2px 2px 0 all.$grey, 0 0 30px all.$shadowSoft;
       vertical-align: middle;
+
+      @include all.medium-and-below {
+        font-size: all.$fontSize1;
+      }
     }
   }
 

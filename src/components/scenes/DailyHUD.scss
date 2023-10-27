@@ -1,0 +1,62 @@
+@use "../../styles/all";
+
+.daily-hud {
+  width: 100%;
+  height: 100%;
+
+  .title-container {
+    margin-bottom: all.$spaceLarge;
+    @include all.medium-and-below{
+      margin-bottom: all.$spaceMedium;
+    }
+
+    h1 {
+      color: all.$darkGrey;
+      font-size: all.$fontSize1;
+      text-shadow: 2px 2px 0 all.$nearBlack;
+
+      @include all.medium-and-below{
+        font-size: all.$fontSize2;
+      }
+    }
+
+    h2 {
+      margin-top: all.$spaceSmall;
+      color: all.$grey;
+    }
+  }
+
+  .difficulty-container {
+    width: 100%;
+
+    @include all.medium-and-below {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .button-container {
+    height: all.$spaceExtraExtraLarge;
+    margin-bottom: all.$spaceMedium;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      span:last-child {
+        margin-left: all.$spaceSmall;
+      }
+    }
+
+    @include all.medium-and-below {
+      height: all.$spaceLarge;
+      margin-bottom: 0;
+    }
+  }
+
+  .results-container {
+    margin-top: all.$spaceExtraExtraLarge;
+  }
+}

@@ -4,6 +4,9 @@
   .premove-controls {
     margin-top: all.$spaceLarge;
     width: 100%;
-    height: all.$spaceExtraLarge;
+
+    @include all.small-and-below() {
+      margin-top: all.$spaceMedium;
+    }
   }
 }

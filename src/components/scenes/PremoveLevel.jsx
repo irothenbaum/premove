@@ -189,7 +189,7 @@ export async function getBoardPiecesFromLevelAndSeed(level, seed, boardSize) {
         row: rand.next().value % (boardSize - 3),
         column: rand.next().value % boardSize,
         isBlack: true,
-        startingMoveDelay: 3, // flipCoin(rand) ? 0 : rand.next().value % numPawns,
+        startingMoveDelay: flipCoin(rand) ? 0 : rand.next().value % numPawns,
       }
     } while (
       retVal.some(p => p.row === nextPiece.row && p.column === nextPiece.column)
