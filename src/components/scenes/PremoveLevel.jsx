@@ -188,7 +188,10 @@ function PremoveLevel(props) {
    * @param {Piece?} piece
    */
   const handleClickSquare = (square, piece) => {
-    if (isShowingMoves) {
+    if (
+      isShowingMoves ||
+      (Array.isArray(props.initializeMoves) && props.initializeMoves.length > 0)
+    ) {
       return
     }
 
@@ -208,7 +211,10 @@ function PremoveLevel(props) {
    * @param {Square} s
    */
   const handleHoverSquare = s => {
-    if (isShowingMoves) {
+    if (
+      isShowingMoves ||
+      (Array.isArray(props.initializeMoves) && props.initializeMoves.length > 0)
+    ) {
       return
     }
 
@@ -224,6 +230,10 @@ function PremoveLevel(props) {
   }
 
   const handleSubmitMoves = () => {
+    if (isShowingMoves) {
+      return
+    }
+
     setHoveringPiece(null)
     setIsShowingMoves(true)
     props.onSubmit(moves)
@@ -312,6 +322,7 @@ function PremoveLevel(props) {
           Array.isArray(props.initializeMoves) &&
           props.initializeMoves.length > 0
         }
+        disableSubmit={isShowingMoves}
         onReset={handleResetMoves}
         onSubmit={handleSubmitMoves}
       />

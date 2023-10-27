@@ -16,11 +16,13 @@ function Square(props) {
       })}
       style={props.style}>
       <div className="chess-board-square-depth" />
+      <div className="chess-board-square-coords">{props.label}</div>
     </div>
   )
 }
 
 Square.propTypes = {
+  label: PropTypes.string,
   isBlack: PropTypes.bool,
   bounce: PropTypes.bool,
   style: PropTypes.object,
@@ -37,7 +39,7 @@ function ChessBoard(props) {
 
   const handleClickSquare = useCallback(
     square => {
-      // const squareKey = getSquareKey(row, column)
+      // const squareKey = getSquareKey(square)
       // setInteractedSquares(s => ({...s, [squareKey]: true}))
       // setTimer(
       //   squareKey,
@@ -77,12 +79,22 @@ function ChessBoard(props) {
                 .fill(null)
                 .map((_, column) => {
                   const squareKey = getSquareKey({row, column})
+                  const firstColumn = column === 0
+                  const lastRow = row === props.dimension - 1
+                  let label = ''
+                  if (lastRow) {
+                    label = String.fromCharCode(65 + column)
+                  }
+                  if (firstColumn) {
+                    label += props.dimension - row
+                  }
                   return (
                     <Square
                       key={`${squareKey}-square`}
                       isBlack={(row + column) % 2 === 1}
                       bounce={interactedSquares[squareKey]}
                       style={{paddingTop: relativeDimensionPercentage}}
+                      label={label}
                     />
                   )
                 })}

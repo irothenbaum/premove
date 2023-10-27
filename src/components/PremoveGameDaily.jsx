@@ -33,8 +33,12 @@ function PremoveGameDaily(props) {
 
   const handleClickSubmit = () => {
     const todayProgress = session[seed] || createDayProgressObject()
-    todayProgress[difficulty].attempts++
+    // we don't modify count if it was already solved
+    if (todayProgress[difficulty].solved) {
+      return
+    }
 
+    todayProgress[difficulty].attempts++
     setSession({...session, [seed]: todayProgress})
   }
 

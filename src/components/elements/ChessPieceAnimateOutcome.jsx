@@ -10,10 +10,10 @@ const READY_DELAY = 0
 
 const FLASH_TIMER = 'flash-timer'
 const FLASH_DELAY = 1000
-const FLASH_DURATION = 500
+const FLASH_DURATION = 300
 
 const COMPLETE_TIMER = 'complete-timer'
-const COMPLETE_DELAY = 1000
+const COMPLETE_DELAY = 1600
 
 function ChessPieceAnimateOutcome(props) {
   const [isReady, setIsReady] = useState(false)

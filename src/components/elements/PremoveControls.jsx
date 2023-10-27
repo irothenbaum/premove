@@ -17,7 +17,9 @@ function PremoveControls(props) {
         </Button>
       </ToolTip>
       <ToolTip label="Submit">
-        <Button onClick={props.onSubmit} disabled={!props.hasMoves}>
+        <Button
+          onClick={props.onSubmit}
+          disabled={!props.hasMoves || props.disableSubmit}>
           <Icon icon={CHECK} />
         </Button>
       </ToolTip>
@@ -28,6 +30,7 @@ function PremoveControls(props) {
 PremoveControls.propTypes = {
   hasMoves: PropTypes.bool,
   disableReset: PropTypes.bool,
+  disableSubmit: PropTypes.bool,
   onReset: PropTypes.func,
   onSubmit: PropTypes.func,
 }

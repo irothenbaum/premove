@@ -55,6 +55,15 @@ $halfSquareDepth: $squareDepth / 2;
     position: relative;
     background-color: all.$primaryColor;
 
+    .chess-board-square-coords {
+      position: absolute;
+      bottom: all.$spaceSmall;
+      left: all.$spaceSmall;
+      color: all.$shadow;
+      font-size: all.$fontSize5;
+      z-index: 10;
+    }
+
     &:after {
       content: '';
       position: absolute;
@@ -63,6 +72,7 @@ $halfSquareDepth: $squareDepth / 2;
       top: 0;
       left: 0;
       background-color: inherit;
+      border: 1px solid all.$shadowSoft;
     }
 
     .chess-board-square-depth {
