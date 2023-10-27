@@ -1,0 +1,64 @@
+@use '../../styles/all';
+
+$explosionRadius: 50vh;
+$explosionDiameter: 100vh;
+$transition: 0.3s ease-out;
+
+.flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: all.$white;
+  animation: fade 0.2s linear forwards;
+  animation-delay: 0.3s;
+}
+
+.chess-piece-animate-outcome {
+  &, .icon-container, {
+    transition: height $transition, width $transition, margin $transition, font-size $transition;
+  }
+
+  height: 100%;
+  width: 100%;
+  flex-shrink: 0;
+  @include all.piece('.chess-piece-inner', all.$offWhite, all.$lightGrey, all.$black, $depth: 15px);
+
+  &.ready {
+    // this positioning basically moves us to 4x a square size and centers us in the board when positioned at square 2,2
+    height: 400%;
+    width: 400%;
+    margin-top: 300%;
+    margin-left: 300%;
+
+    @include all.piece('.chess-piece-inner', all.$offWhite, all.$lightGrey, all.$black, $depth: 60px);
+    @include all.shadow(60px, all.$shadowHard);
+
+    border-radius: 32px;
+    padding: 8px;
+    .chess-piece-inner {
+      border-radius: 24px;
+
+      .icon-container, .sad-face {
+        font-size: 10em;
+      }
+    }
+  }
+
+  &.revealed {
+    &.win {
+      background: linear-gradient(-135deg,  #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+      .chess-piece-inner {
+        background: linear-gradient(to top,  #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        color: all.$nearBlack;
+      }
+    }
+  }
+}
+
+@keyframes fade {
+  from {opacity: 1}
+  to {opacity: 0}
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 import './ChessPiece.scss'
 import PropTypes from 'prop-types'
 import {PIECE_KNIGHT, PIECE_PAWN, PIECE_QUEEN} from '../../constants/chess'
@@ -12,10 +12,11 @@ const TYPE_TO_ICON = {
   [PIECE_QUEEN]: QUEEN,
 }
 
-function ChessPiece(props) {
+const ChessPiece = forwardRef(function ChessPiece(props, ref) {
   const piece = (
     <div
-      className={constructClassString('chess-piece', {black: props.isBlack})}>
+      className={constructClassString('chess-piece', {black: props.isBlack})}
+      ref={ref}>
       <div className="chess-piece-inner">
         {props.moveCount ? (
           <p className="move-count">{props.moveCount}</p>
@@ -36,7 +37,7 @@ function ChessPiece(props) {
   ) : (
     piece
   )
-}
+})
 
 /**
  * @param {number?} moveCount

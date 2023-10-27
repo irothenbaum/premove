@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import './PremoveLevel.scss'
 import ChessBoard from '../elements/ChessBoard'
 import ChessPiece from '../elements/ChessPiece'
@@ -18,6 +18,10 @@ import {
 import HighlightSquare from '../elements/HighlightSquare'
 import PremoveControls from '../elements/PremoveControls'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
+import ChessPieceAnimateOutcome from '../elements/ChessPieceAnimateOutcome'
+
+const WIN = 'win'
+const LOSE = 'lose'
 
 const MOVE_TIMER = 'timer'
 const MOVE_DELAY = 1000
@@ -34,9 +38,11 @@ function PremoveLevel(props) {
   const [isShowingMoves, setIsShowingMoves] = useState(false)
   const [revealingMoveIndex, setRevealingMoveIndex] = useState(null)
   const {setTimer, cancelTimer, cancelAllTimers} = useDoOnceTimer()
+  const [gameOver, setGameOver] = useState(null)
 
   const resetBoard = () => {
     cancelAllTimers()
+    setGameOver(null)
     setIsShowingMoves(false)
     setRevealingMoveIndex(null)
     setMoves(props.initializeMoves || [])
@@ -50,6 +56,7 @@ function PremoveLevel(props) {
       })
   }
 
+  // if seed of level change we reset the board
   useEffect(() => {
     resetBoard()
   }, [props.seed, props.level])
@@ -68,14 +75,11 @@ function PremoveLevel(props) {
     if (revealingMoveIndex === moves.length) {
       cancelTimer(MOVE_TIMER)
       cancelTimer(OPPONENT_MOVE_TIMER)
-      // HERE determine win / loss
-
       if (pieces.find(p => p.isBlack)) {
-        // if there are any pawns left, we win
-        props.onLose(moves)
-        resetBoard()
+        // if there are any pawns left, we lose
+        handleLose()
       } else {
-        props.onWin(moves)
+        handleWin()
       }
       return
     }
@@ -98,33 +102,40 @@ function PremoveLevel(props) {
           nextPieces.filter(p => p.isBlack && p.row === BOARD_SIZE - 1).length >
           0
         ) {
-          setTimer()
-          props.onLose(moves)
-          resetBoard()
+          handleLose()
           return
         }
 
+        // we advance the opponent pieces
         const postPieces = nextPieces.map(piece => {
-          if (piece.isBlack) {
-            if (piece.currentMoveDelay > 0) {
-              piece.currentMoveDelay--
-            } else {
-              const nextRow = piece.row + 1
+          if (!piece.isBlack) {
+            return piece
+          }
 
-              if (
-                !nextPieces.find(
-                  p => p.row === nextRow && p.column === piece.column,
-                )
-              ) {
-                piece.row = nextRow
+          if (piece.currentMoveDelay > 0) {
+            // if they have a move delay, we just decrement it and wait
+            piece.currentMoveDelay--
+          } else {
+            // otherwise we prepare to move them forward
+            const nextRow = piece.row + 1
 
-                if (nextRow === BOARD_SIZE - 1) {
-                  piece.type = PIECE_QUEEN
-                }
+            // determine if there's a piece on their next row
+            const pieceOnNextRow = nextPieces.find(
+              p => p.row === nextRow && p.column === piece.column,
+            )
+
+            // if there isn't, we move them forward
+            if (!pieceOnNextRow) {
+              piece.row = nextRow
+
+              // if they're now on the back rank, they become a queen
+              if (nextRow === BOARD_SIZE - 1) {
+                piece.type = PIECE_QUEEN
               }
-
-              piece.currentMoveDelay = piece.startingMoveDelay
             }
+
+            // since at this point they "moved", we reset their move delay
+            piece.currentMoveDelay = piece.startingMoveDelay
           }
 
           return piece
@@ -136,6 +147,32 @@ function PremoveLevel(props) {
       OPPONENT_MOVE_DELAY,
     )
   }, [revealingMoveIndex])
+
+  const handleLose = () => {
+    cancelAllTimers()
+    // center them in the board
+    playerPiece.row = 2
+    playerPiece.column = 2
+    setGameOver(LOSE)
+  }
+
+  const handleWin = () => {
+    cancelAllTimers()
+    // center them in the board
+    playerPiece.row = 2
+    playerPiece.column = 2
+    setGameOver(WIN)
+  }
+
+  const handleAnimationComplete = () => {
+    if (gameOver === WIN) {
+      props.onWin(moves)
+    } else {
+      props.onLose(moves)
+    }
+    setGameOver(null)
+    resetBoard()
+  }
 
   // find latest move the player piece made (if any)
   let playerPieceLatestMovePosition = playerPiece
@@ -189,6 +226,7 @@ function PremoveLevel(props) {
   const handleSubmitMoves = () => {
     setHoveringPiece(null)
     setIsShowingMoves(true)
+    props.onSubmit(moves)
 
     const progressMove = () => {
       setRevealingMoveIndex(i => {
@@ -245,14 +283,23 @@ function PremoveLevel(props) {
               <HighlightSquare isBlack={p.isBlack} label={p.label} />
             )
           } else {
-            return (
-              <ChessPiece
-                type={p.type}
-                isBlack={p.isBlack}
-                moveCount={p.currentMoveDelay}
-                isHovered={hoveringPiece && isSameSquare(p, hoveringPiece)}
-              />
-            )
+            if (p.id === PLAYER_ID && gameOver) {
+              return (
+                <ChessPieceAnimateOutcome
+                  isWin={gameOver === WIN}
+                  onComplete={handleAnimationComplete}
+                />
+              )
+            } else {
+              return (
+                <ChessPiece
+                  type={p.type}
+                  isBlack={p.isBlack}
+                  moveCount={p.currentMoveDelay}
+                  isHovered={hoveringPiece && isSameSquare(p, hoveringPiece)}
+                />
+              )
+            }
           }
         }}
         onClickSquare={handleClickSquare}
@@ -277,6 +324,7 @@ PremoveLevel.propTypes = {
   seed: PropTypes.string,
   onWin: PropTypes.func,
   onLose: PropTypes.func,
+  onSubmit: PropTypes.func,
   initializeMoves: PropTypes.array,
 }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import BootLoader from './BootLoader'
 import './PremoveGameDaily.scss'
 import PremoveLevel from './scenes/PremoveLevel'
@@ -26,6 +26,18 @@ function PremoveGameDaily(props) {
   const [difficulty, setDifficulty] = useState(DIFFICULTY_EASY)
   const [session, setSession] = useState(HydratedSession)
 
+  // whenever state session changes, we flush
+  useEffect(() => {
+    flushSession(session)
+  }, [session])
+
+  const handleClickSubmit = () => {
+    const todayProgress = session[seed] || createDayProgressObject()
+    todayProgress[difficulty].attempts++
+
+    setSession({...session, [seed]: todayProgress})
+  }
+
   /**
    * @param {Array<Square>} moves
    */
@@ -39,37 +51,18 @@ function PremoveGameDaily(props) {
       }
 
       // increase attempts count, mark the win, and set the moves array
-      todayProgress[difficulty].attempts++
       todayProgress[difficulty].moves = moves
       todayProgress[difficulty].solved = true
 
-      const updatedValue = {...s, [seed]: todayProgress}
-      flushSession(updatedValue)
-      return updatedValue
+      return {...s, [seed]: todayProgress}
     })
-    window.alert('WIN')
   }
 
   /**
    * @param {Array<Square>} moves
    */
   const handleLose = moves => {
-    setSession(s => {
-      const todayProgress = s[seed] || createDayProgressObject()
-
-      // we don't overwrite if it was already solved
-      if (todayProgress[difficulty].solved) {
-        return s
-      }
-
-      // just increase attempts count
-      todayProgress[difficulty].attempts++
-
-      const updatedValue = {...s, [seed]: todayProgress}
-      flushSession(updatedValue)
-      return updatedValue
-    })
-    window.alert('LOSE')
+    // we don't actually need to do anything since we recorded the attempt when they clicked Submit
   }
 
   const selectedDifficulty = session[seed]?.[difficulty]
@@ -88,6 +81,7 @@ function PremoveGameDaily(props) {
           <PremoveLevel
             level={difficultyToLevelMap[difficulty]}
             seed={seed}
+            onSubmit={handleClickSubmit}
             onLose={handleLose}
             onWin={handleWin}
             initializeMoves={

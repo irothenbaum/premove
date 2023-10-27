@@ -37,6 +37,7 @@ import {
   faRotateLeft,
   faShare,
   faChessQueen,
+  faChessKing,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle, faSquare} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
@@ -76,6 +77,7 @@ export const PAWN = faChessPawn
 export const KNIGHT = faChessKnight
 export const QUEEN = faChessQueen
 export const SHARE = faShare
+export const KING = faChessKing
 
 function Icon(props) {
   return (
