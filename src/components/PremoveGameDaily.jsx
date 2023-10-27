@@ -72,6 +72,8 @@ function PremoveGameDaily(props) {
     window.alert('LOSE')
   }
 
+  const selectedDifficulty = session[seed]?.[difficulty]
+
   return (
     <SessionContext.Provider
       value={{
@@ -88,6 +90,9 @@ function PremoveGameDaily(props) {
             seed={seed}
             onLose={handleLose}
             onWin={handleWin}
+            initializeMoves={
+              selectedDifficulty?.solved ? selectedDifficulty.moves : undefined
+            }
           />
         </div>
       </div>

@@ -13,7 +13,7 @@ import {
   DIFFICULTY_HARD,
 } from '../../constants/game'
 import SessionContext from '../../contexts/SessionContext'
-import Icon, {SHARE} from '../utility/Icon'
+import Icon, {SHARE, CHEVRON_RIGHT} from '../utility/Icon'
 
 const difficultyLabels = {
   [DIFFICULTY_EASY]: 'Easy',
@@ -49,7 +49,9 @@ function DailyHUD(props) {
                   : VARIANT_SECONDARY
               }>
               <span>{difficultyLabels[difficulty]}</span>{' '}
-              <span>{progress[difficulty].attempts}</span>
+              <span>
+                {progress[difficulty].attempts || <Icon icon={CHEVRON_RIGHT} />}
+              </span>
             </Button>
           )
         })}
@@ -57,8 +59,7 @@ function DailyHUD(props) {
       <div className="results-container">
         <Button
           onClick={handleShareResults}
-          variant={VARIANT_TERTIARY}
-          disabled={Object.entries(progress).every(p => !p.solved)}>
+          disabled={Object.values(progress).every(p => p.attempts === 0)}>
           <Icon icon={SHARE} />
           Share results
         </Button>

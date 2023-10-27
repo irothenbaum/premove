@@ -30,6 +30,7 @@ $halfSquareDepth: $squareDepth / 2;
   }
 
   .chess-board-click-listener {
+    cursor: pointer;
     z-index: 100;
   }
 

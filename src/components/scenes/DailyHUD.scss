@@ -22,6 +22,7 @@
 
     h2 {
       margin-top: all.$spaceSmall;
+      margin-left: 4px;
       color: all.$grey;
     }
   }
@@ -45,8 +46,10 @@
       align-items: center;
       justify-content: space-between;
 
-      span:last-child {
-        margin-left: all.$spaceSmall;
+      span {
+        &:last-child {
+          margin-left: all.$spaceSmall;
+        }
       }
     }
 
@@ -58,5 +61,17 @@
 
   .results-container {
     margin-top: all.$spaceExtraExtraLarge;
+
+    .icon-container {
+      margin-right: all.$spaceMedium;
+    }
+
+    @include all.medium-and-below {
+      margin-top: all.$spaceLarge;
+
+      .button-container {
+        display: inline-block;
+      }
+    }
   }
 }

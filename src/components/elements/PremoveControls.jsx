@@ -9,12 +9,15 @@ function PremoveControls(props) {
   return (
     <div className="premove-controls">
       <ToolTip label="Reset moves">
-        <Button onClick={props.onReset} variant={VARIANT_SECONDARY}>
+        <Button
+          onClick={props.onReset}
+          variant={VARIANT_SECONDARY}
+          disabled={props.disableReset}>
           <Icon icon={RESET} />
         </Button>
       </ToolTip>
       <ToolTip label="Submit">
-        <Button onClick={props.onSubmit} disabled={props.isDisabled}>
+        <Button onClick={props.onSubmit} disabled={!props.hasMoves}>
           <Icon icon={CHECK} />
         </Button>
       </ToolTip>
@@ -23,7 +26,8 @@ function PremoveControls(props) {
 }
 
 PremoveControls.propTypes = {
-  isDisabled: PropTypes.bool,
+  hasMoves: PropTypes.bool,
+  disableReset: PropTypes.bool,
   onReset: PropTypes.func,
   onSubmit: PropTypes.func,
 }
