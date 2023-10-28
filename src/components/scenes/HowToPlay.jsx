@@ -11,61 +11,57 @@ function HowToPlay(props) {
         <h1>
           How to play <span>Premove</span>
         </h1>
-        <div className="section">
+        <div className="section pieces-container">
           <h3>Pieces</h3>
-          <ul>
-            <li>
-              <strong>You:</strong> <ChessPiece type={PIECE_KNIGHT} />
-            </li>
-            <li>
-              <strong>Pawn:</strong>{' '}
-              <ChessPiece type={PIECE_PAWN} isBlack={true} />
-            </li>
-            <li>
-              <strong>Delayed pawn:</strong>{' '}
-              <div>
-                <ChessPiece noTooltip={true} moveCount={2} isBlack={true} />
-                <br />
-                <em>This pawn will wait 2 turns before moving</em>
-              </div>
-            </li>
-          </ul>
+          <div className="piece-description">
+            <ChessPiece type={PIECE_KNIGHT} />
+            <strong>You</strong>
+            <p>Follows normal Chess Knight rules</p>
+          </div>
+          <div className="piece-description">
+            <ChessPiece type={PIECE_PAWN} isBlack={true} />
+            <strong>Pawn</strong>
+            <p>Moves downward but does not attack</p>
+          </div>
+          <div className="piece-description">
+            <ChessPiece noTooltip={true} moveCount={2} isBlack={true} />
+            <strong>Delayed Pawn</strong>
+            <p>Waits 2 turns before each move</p>
+          </div>
+        </div>
+
+        <div className="section">
+          <h3>How to play</h3>
+          <p>
+            <span>PREMOVE</span> is a Chess puzzle where you must schedule all
+            your moves in advance before they take effect.
+          </p>
+          <p>
+            To schedule a move, simple click a legal square your knight can
+            travel to. Once you're satisfied with the moves you've placed,
+            you'll click the <Icon icon={CHECK} /> button to submit your
+            solution
+          </p>
         </div>
 
         <div className="section">
           <h3>Rules</h3>
           <ul>
+            <li>You control the Knight. Pawns will advance down the board.</li>
             <li>
-              The pawns will march straight down the board, they will not attack
-              you and they cannot step over you nor other pawns.
+              Your Knight can make any legal chess move. Pawns will not attack
+              and can be blocked by your Knight. Your must capture all the Pawns
+              to win.
             </li>
             <li>
-              When a pawn reaches the 1st rank, it will become a Queen and you
-              will lose if you do not immediately capture it on your next move.
+              It a Pawn reaches the 1st rank, it will become a Queen. Queens
+              must be taken immediately on your next move or you lose.
             </li>
             <li>
-              If any pawns remain after you've made all your moves, you will
+              If any Pawns remain after you've made all your moves, you will
               lose.
             </li>
           </ul>
-        </div>
-        <div className="section">
-          <h3>How to play</h3>
-          <p>
-            You play as the Knight. You may make any move that a knight can make
-            in a game of Chess. Your goal is capture all the pawns in as few
-            moves as possible, but you must schedule (or premove) all your moves
-            in advance. To schedule a move, simply click a legal square your
-            knight can travel to. Once you're satisfied with the moves you've
-            placed, you'll click the <Icon icon={CHECK} /> button to submit your
-            solution. If after all your moves are played any pawns remain, or if
-            any pawn reaches the 1st rank{' '}
-            <strong>
-              without being immediately captured on your next move
-            </strong>
-            , you lose. If you're able to capture all the pawns before they
-            reach the 1st rank, you win!
-          </p>
         </div>
       </div>
     </div>

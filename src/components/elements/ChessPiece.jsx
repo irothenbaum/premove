@@ -2,7 +2,7 @@ import React, {forwardRef} from 'react'
 import './ChessPiece.scss'
 import PropTypes from 'prop-types'
 import {PIECE_KNIGHT, PIECE_PAWN, PIECE_QUEEN} from '../../constants/chess'
-import {constructClassString} from '../../utilities'
+import {constructClassString, pluralize} from '../../utilities'
 import Icon, {PAWN, KNIGHT, QUEEN} from '../utility/Icon'
 import ToolTip, {ANCHOR_BOTTOM, ANCHOR_TOP} from '../utility/ToolTip'
 
@@ -45,13 +45,7 @@ const ChessPiece = forwardRef(function ChessPiece(props, ref) {
  * @return {string}
  */
 function getLabelFromMoveCount(moveCount) {
-  switch (moveCount) {
-    case 1:
-      return `This piece skips a turn before moving`
-
-    default:
-      return `This piece skips ${moveCount} turns before moving`
-  }
+  return `Waits ${pluralize('turn', moveCount, true)} before each move`
 }
 
 ChessPiece.propTypes = {

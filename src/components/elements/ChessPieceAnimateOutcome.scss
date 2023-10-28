@@ -27,10 +27,11 @@ $transition: 0.3s ease-out;
 
   &.ready {
     // this positioning basically moves us to 4x a square size and centers us in the board when positioned at square 2,2
-    height: 400%;
-    width: 400%;
-    margin-top: 300%;
-    margin-left: 300%;
+    // it's intentionally a little off center so it doesn't align exactly with the grid (400% & 300%)
+    height: 420%;
+    width: 420%;
+    margin-top: 310%;
+    margin-left: 310%;
 
     @include all.piece('.chess-piece-inner', all.$offWhite, all.$lightGrey, all.$black, $depth: 60px);
     @include all.shadow(60px, all.$shadowHard);
@@ -45,6 +46,10 @@ $transition: 0.3s ease-out;
 
         @include all.medium-and-below {
           font-size: 8em;
+        }
+
+        @include all.small-and-below {
+          font-size: 6em;
         }
       }
     }

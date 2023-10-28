@@ -3,7 +3,7 @@ import './ShareResults.scss'
 import SessionContext from '../../contexts/SessionContext'
 import moment from 'moment'
 import {DAY_1, DIFFICULTY_ORDER} from '../../constants/game'
-import {constructClassString} from '../../utilities'
+import {constructClassString, pluralize} from '../../utilities'
 import Button, {VARIANT_TERTIARY} from '../utility/Button'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import Icon, {CHECK, CLIPBOARD} from '../utility/Icon'
@@ -30,6 +30,7 @@ function ShareResults(props) {
       <h1>{moment().format('LL')}</h1>
 
       <div className="share-results-content">
+        <h3>Puzzle #{getPuzzleNumber()}</h3>
         {DIFFICULTY_ORDER.map(difficulty => {
           const thisResult = progress[difficulty]
           return (
@@ -38,16 +39,22 @@ function ShareResults(props) {
               className={constructClassString('result', {
                 solved: thisResult.solved,
               })}>
-              {thisResult.solved ? (
+              {thisResult.attempts > 0 ? (
                 <React.Fragment>
-                  <span>{thisResult.moves.length}</span>
-                  {pluralize('move', thisResult.moves.length)} in
+                  {thisResult.solved ? (
+                    <span>
+                      <strong>{thisResult.moves.length}</strong>
+                      {pluralize('move', thisResult.moves.length)} in
+                    </span>
+                  ) : (
+                    <span>Failed after</span>
+                  )}
+                  <strong>{thisResult.attempts}</strong>
+                  {pluralize('attempt', thisResult.attempts)}
                 </React.Fragment>
               ) : (
-                <React.Fragment>Failed after</React.Fragment>
+                <span>Not attempted</span>
               )}
-              <span>{thisResult.attempts}</span>
-              {pluralize('attempt', thisResult.attempts)}
             </div>
           )
         })}
@@ -70,22 +77,15 @@ function ShareResults(props) {
 }
 
 /**
- * @param {string} word
- * @param {number} count
- * @param {boolean} includeCount
- * @return {string}
- */
-function pluralize(word, count, includeCount = false) {
-  const result = count === 1 ? word : `${word}s`
-  return includeCount ? `${count} ${result}` : result
-}
-
-/**
  * @param {boolean} solved
  * @return {string}
  */
 function getEmojiFromSolved(solved) {
   return solved ? SOLVED_EMOJI : NOT_SOLVED_EMOJI
+}
+
+function getPuzzleNumber() {
+  return moment().startOf('day').diff(DAY_1, 'days')
 }
 
 /**
@@ -94,7 +94,7 @@ function getEmojiFromSolved(solved) {
  */
 function generateText(progress) {
   return (
-    `PREMOVE #${moment().diff(DAY_1, 'days')}\n` +
+    `PREMOVE\n Puzzle #${getPuzzleNumber()}:\n` +
     DIFFICULTY_ORDER.map(
       difficulty =>
         `${getEmojiFromSolved(progress[difficulty].solved)} ${

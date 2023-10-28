@@ -67,3 +67,22 @@ export async function randomGenerator(seedStr) {
 
   return generator()
 }
+
+/**
+ * @param {string} word
+ * @param {number} count
+ * @param {boolean} includeCount
+ * @return {string}
+ */
+export function pluralize(word, count, includeCount = false) {
+  const result = count === 1 ? word : `${word}s`
+  return includeCount ? `${count} ${result}` : result
+}
+
+/**
+ * @param {Square} s
+ * @return {string}
+ */
+export function getSquareKey(s) {
+  return `${s.row}-${s.column}`
+}

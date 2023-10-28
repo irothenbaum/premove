@@ -41,6 +41,10 @@ $halfSquareDepth: $squareDepth / 2;
     justify-content: center;
 
     transition: top all.$transition, left all.$transition;
+
+    &.bounce {
+      animation: pop-up 0.5s ease-in-out, shadow-fade 0.5s ease-in-out;
+    }
   }
 
   .chess-board-row {

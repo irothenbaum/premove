@@ -8,7 +8,15 @@
   .how-to-play-inner {
     max-height: 60vh;
     overflow-y: scroll;
-    padding: all.$spaceLarge 0;
+    padding: all.$spaceLarge;
+
+    @include all.medium-and-below {
+      padding: all.$spaceMedium;
+    }
+
+    @include all.small-and-below {
+      padding: all.$spaceSmall;
+    }
   }
 
   h1 {
@@ -26,6 +34,48 @@
     font-size: all.$fontSize3;
     margin-bottom: all.$spaceMedium;
   }
+
+  .pieces-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    text-align: center;
+    position: relative;
+
+    @include all.small-and-below {
+      padding-top: 4.5rem !important;
+
+      h3 {
+        position: absolute;
+        top: all.$spaceLarge;
+        left: 0;
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+    .piece-description {
+      width: 100%;
+      max-width: 10rem;
+      margin-right: all.$spaceSmall;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      strong {
+        display: block;
+        font-weight: bold;
+        margin-top: all.$spaceExtraSmall
+      }
+      & > p {
+        line-height: 1.2em;
+        font-size: all.$fontSize5;
+        font-style: italic;
+      }
+    }
+  }
+
   .section {
     margin-top: all.$spaceLarge;
     border-top: 1px solid all.$lightGrey;
@@ -35,6 +85,19 @@
       margin-top: 0;
       padding-top: 0;
       border: none;
+    }
+
+    & > p {
+      margin-bottom: all.$spaceMedium;
+
+      span {
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .icon-container {
+        margin: 0 all.$spaceSmall;
+      }
     }
   }
 

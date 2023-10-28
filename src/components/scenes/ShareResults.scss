@@ -4,6 +4,9 @@
   padding: all.$spaceMedium;
 
   h2 {
+    letter-spacing: 0.05em;
+    font-family: all.$fontFamilyBody;
+    text-transform: none;
     margin-bottom: all.$spaceSmall;
   }
   h1 {
@@ -14,8 +17,15 @@
     }
   }
 
+  h3 {
+    margin-bottom: all.$spaceMedium;
+  }
+
   .share-results-content {
-    margin-top: all.$spaceLarge;
+    margin: all.$spaceLarge 0;
+    border-top: 1px solid all.$lightGrey;
+    border-bottom: 1px solid all.$lightGrey;
+    padding: all.$spaceLarge 0;
 
     .result {
       display: flex;
@@ -25,23 +35,31 @@
       font-family: all.$fontFamilyBody;
       text-transform: none;
 
+      $dimension: 30px;
       &:before {
-        content: "";
+        content: "😭";
+        text-align: center;
+        line-height: $dimension;
         display: block;
-        width: 50px;
-        height: 50px;
+        width: $dimension;
+        height: $dimension;
         border-radius: 4px;
         margin-right: all.$spaceMedium;
         background-color: #c00000;
       }
 
       &.solved:before {
+        content: "👑";
         background-color: #00c500;
       }
 
-      span {
+      strong {
         margin: 0 all.$spaceSmall;
         font-family: all.$fontFamilyRegular;
+
+        &:first-child {
+          margin-left: 0;
+        }
       }
     }
   }
@@ -52,7 +70,8 @@
     justify-content: center;
 
     .button-container {
-      @include all.shadow()
+      @include all.shadow();
+      width: 260px;
     }
 
     button {

@@ -3,6 +3,8 @@ import './BootLoader.scss'
 import useDoOnceTimer from '../hooks/useDoOnceTimer'
 import {constructClassString} from '../utilities'
 import Icon, {CHESS} from './utility/Icon'
+import ChessPiece from './elements/ChessPiece'
+import {PIECE_KNIGHT} from '../constants/chess'
 
 const BOOT_TIME = 3000
 const FADE_DURATION = 1000
@@ -13,8 +15,7 @@ function BootLoader(props) {
   const [isFading, setIsFading] = useState(false)
 
   useEffect(() => {
-    // TODO: revert this to false to have bootloader render
-    setIsReady(true)
+    setIsReady(false)
   }, [])
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function BootLoader(props) {
         ready: isReady,
       })}>
       <div className="boot-loader-content">
-        <Icon icon={CHESS} className="boot-loader-icon" />
+        <ChessPiece type={PIECE_KNIGHT} />
         <h1>PREMOVE</h1>
       </div>
     </div>

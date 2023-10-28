@@ -8,7 +8,7 @@ export const DIFFICULTY_ORDER = [
   DIFFICULTY_HARD,
 ]
 
-export const DAY_1 = '2023-10-28'
+export const DAY_1 = '2023-10-27'
 
 export const IDLE_ANIMATE_PATTERN_1 = [
   [{row: 3, column: 3}],

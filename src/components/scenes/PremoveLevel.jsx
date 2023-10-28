@@ -4,7 +4,11 @@ import ChessBoard from '../elements/ChessBoard'
 import ChessPiece from '../elements/ChessPiece'
 import PropTypes from 'prop-types'
 import {v4 as uuid} from 'uuid'
-import {constructClassString, randomGenerator} from '../../utilities'
+import {
+  constructClassString,
+  getSquareKey,
+  randomGenerator,
+} from '../../utilities'
 import {
   BOARD_SIZE,
   getHighlightSquaresForPiece,
@@ -265,12 +269,24 @@ function PremoveLevel(props) {
   const piecesToRender = pieces
     .concat(
       // moves they made
-      moves.map((m, i) => ({
-        ...m,
-        type: PIECE_SQUARE_HIGHLIGHT,
-        label: `${i + 1}`,
-        isBlack: true,
-      })),
+      Object.values(
+        moves
+          .map((m, i) => ({
+            ...m,
+            type: PIECE_SQUARE_HIGHLIGHT,
+            label: `${i + 1}`,
+            isBlack: true,
+          }))
+          .reduce((agr, m) => {
+            const key = getSquareKey(m)
+            if (agr[key]) {
+              agr[key].label = `${agr[key].label},${m.label}`
+            } else {
+              agr[key] = m
+            }
+            return agr
+          }, {}),
+      ),
     )
     .concat(
       // squares they can move to

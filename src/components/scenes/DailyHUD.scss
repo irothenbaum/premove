@@ -64,8 +64,12 @@
     }
 
     @include all.medium-and-below {
-      height: all.$spaceLarge;
+      height: all.$spaceExtraLarge;
       margin-bottom: 0;
+    }
+
+    @include all.small-and-below {
+      height: all.$spaceLarge;
     }
   }
 
@@ -84,7 +88,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: all.$spaceLarge;
+      margin-top: 0;
 
       .button-container {
         margin-top: 0;

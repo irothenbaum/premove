@@ -18,6 +18,7 @@ $highlightSecondary: rgba(0, 0, 0, 0.3);
   justify-content: center;
   font-size: all.$fontSize1;
   color: all.$shadowHard;
+  flex-wrap: wrap;
 
   &.black {
     height: 90%;
@@ -30,13 +31,34 @@ $highlightSecondary: rgba(0, 0, 0, 0.3);
     border: none;
   }
 
+  &.compressed {
+    font-size: all.$fontSize3;
+  }
+
+  span {
+    &:after {
+      content: ',';
+    }
+
+    &:last-child:after {
+      display: none;
+    }
+  }
+
   @include all.medium-and-below{
     font-size: all.$fontSize2;
+
+    &.compressed {
+      font-size: all.$fontSize4;
+    }
   }
 
   @include all.small-and-below {
     border-width: 2px;
     @include all.shadow(10px, $highlightPrimary);
     font-size: all.$fontSize3;
+    &.compressed {
+      font-size: all.$fontSize5;
+    }
   }
 }

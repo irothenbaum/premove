@@ -4,6 +4,7 @@ import {constructClassString} from '../../utilities'
 import PropTypes from 'prop-types'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import {BOARD_SIZE, isSameSquare} from '../../constants/chess'
+import {getSquareKey} from '../../utilities'
 
 const ANIMATE_TIMER = 'animate-timer'
 const ANIMATE_DELAY = 100
@@ -42,6 +43,26 @@ function ChessBoard(props) {
   const relativeDimensionPercentage = `${relativeDimensionRatio}%`
   const [interactedSquares, setInteractedSquares] = useState({})
   const {setTimer, cancelAllTimers} = useDoOnceTimer()
+
+  /**
+   * @param {Square} square
+   */
+  function animateSquare(square) {
+    const squareKey = getSquareKey(square)
+    setInteractedSquares(iS => ({...iS, [squareKey]: true}))
+    setTimer(
+      `animate-${squareKey}`,
+      () => {
+        setInteractedSquares(iS => {
+          const copy = {...iS}
+          delete copy[squareKey]
+          return copy
+        })
+      },
+      500,
+    )
+  }
+
   /*
 DOESN'T WORK RIGHT YET -- cannot be disabled once enabled :/
   // this is the idle animation logic
@@ -138,9 +159,12 @@ DOESN'T WORK RIGHT YET -- cannot be disabled once enabled :/
         })}
       <div className="chess-board-pieces-container">
         {props.pieces.map(piece => {
+          const squareKey = getSquareKey(piece)
           return (
             <div
-              className="chess-board-piece-container"
+              className={constructClassString('chess-board-piece-container', {
+                bounce: interactedSquares[squareKey],
+              })}
               key={piece.id}
               style={{
                 top: `${relativeDimensionRatio * piece.row}%`,
@@ -276,12 +300,4 @@ function getSquarePosition(e, squareSize) {
     row: Math.floor(y / squareSize),
     column: Math.floor(x / squareSize),
   }
-}
-
-/**
- * @param {Square} s
- * @return {string}
- */
-function getSquareKey(s) {
-  return `${s.row}-${s.column}`
 }
