@@ -94,7 +94,7 @@ function getPuzzleNumber() {
  */
 function generateText(progress) {
   return (
-    `PREMOVE\n Puzzle #${getPuzzleNumber()}:\n` +
+    `PREMOVE\nPuzzle #${getPuzzleNumber()}:\n` +
     DIFFICULTY_ORDER.map(
       difficulty =>
         `${getEmojiFromSolved(progress[difficulty].solved)} ${
