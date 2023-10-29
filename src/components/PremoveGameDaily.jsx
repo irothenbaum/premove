@@ -8,11 +8,13 @@ import {
   DIFFICULTY_EASY,
   DIFFICULTY_MODERATE,
   DIFFICULTY_HARD,
+  DIFFICULTY_ORDER,
 } from '../constants/game'
 import SessionContext, {
   HydratedSession,
   flushSession,
 } from '../contexts/SessionContext'
+import PropTypes from 'prop-types'
 
 const difficultyToLevelMap = {
   [DIFFICULTY_EASY]: 1,
@@ -37,13 +39,16 @@ function PremoveGameDaily(props) {
   }, [session])
 
   const getTodayProgress = () => {
-    if (!session[seed]) {
+    if (!session.progress[seed]) {
       const newProgress = createDayProgressObject()
-      setSession({...session, [seed]: newProgress})
+      setSession({
+        ...session,
+        progress: {...session.progress, [seed]: newProgress},
+      })
       return newProgress
     }
 
-    return session[seed]
+    return session.progress[seed]
   }
 
   const handleClickSubmit = () => {
@@ -72,7 +77,14 @@ function PremoveGameDaily(props) {
     todayProgress[difficulty].moves = moves
     todayProgress[difficulty].solved = true
 
-    return setSession({...session, [seed]: todayProgress})
+    setSession({...session, [seed]: todayProgress})
+
+    if (difficulty === DIFFICULTY_HARD) {
+      // TODO: would be nice to show Share Results or something
+    } else {
+      // move to next difficulty
+      setDifficulty(DIFFICULTY_ORDER.index(difficulty) + 1)
+    }
   }
 
   /**
@@ -82,16 +94,16 @@ function PremoveGameDaily(props) {
     // we don't actually need to do anything since we recorded the attempt when they clicked Submit
   }
 
-  if (!session[seed]) {
+  if (!session.progress[seed]) {
     return null
   }
 
-  const selectedDifficulty = session[seed][difficulty]
+  const selectedDifficulty = session.progress[seed][difficulty]
 
   return (
     <SessionContext.Provider
       value={{
-        progress: session[seed],
+        progress: session.progress[seed],
         hasReadRules: session.hasReadRules,
 
         setHasReadRules: () => {
@@ -99,7 +111,7 @@ function PremoveGameDaily(props) {
         },
         getTodayProgress: getTodayProgress,
       }}>
-      <BootLoader />
+      <BootLoader onPlayInfinite={props.onPlayInfinite} />
       <div className="premove-game-daily">
         <div className="hud-container">
           <DailyHUD difficulty={difficulty} onChange={setDifficulty} />
@@ -119,6 +131,10 @@ function PremoveGameDaily(props) {
       </div>
     </SessionContext.Provider>
   )
+}
+
+PremoveGameDaily.propTypes = {
+  onPlayInfinite: PropTypes.func,
 }
 
 export default PremoveGameDaily

@@ -40,6 +40,7 @@ import {
   faChessKing,
   faCircleInfo,
   faClipboard,
+  faInfinity,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle, faSquare} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
@@ -60,7 +61,7 @@ export const QUEEN = faChessQueen
 export const SHARE = faShare
 export const KING = faChessKing
 export const INFO = faCircleInfo
-
+export const INFINITY = faInfinity
 export const CLIPBOARD = faClipboard
 
 function Icon(props) {

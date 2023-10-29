@@ -14,14 +14,33 @@
 
     @include all.medium-and-below{
       font-size: all.$fontSize2;
-      margin-bottom: all.$spaceLarge;
+      margin-bottom: all.$spaceMedium;
     }
+
+    span {
+      position: relative;
+      margin-left: all.$spaceSmall;
+      .icon-container:first-child {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        z-index: 2;
+      }
+
+      .icon-container:last-child {
+        color: all.$nearBlack;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
   }
 
   h2 {
     color: all.$black;
     margin-bottom: all.$spaceLarge;
-    font-size: all.$fontSize3;
+    font-size: all.$fontSize4;
     line-height: 1.5em;
 
     span {
@@ -34,8 +53,38 @@
       vertical-align: middle;
 
       @include all.medium-and-below {
-        font-size: all.$fontSize1;
+        font-size: all.$fontSize3;
       }
+
+      @include all.small-and-below{
+        font-size: all.$fontSize2;
+      }
+    }
+
+    @include all.medium-and-below {
+      margin-bottom: all.$spaceMedium;
+    }
+
+    &.seed-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .icon-container {
+        color: all.$ctaColor;
+        font-size: all.$fontSize2;
+      }
+    }
+  }
+
+  .string-input {
+    font-size: all.$fontSize5;
+    margin-left: all.$spaceSmall;
+
+    input {
+      border: 2px solid all.$grey;
+      border-left: 0;
+      border-top: 0;
     }
   }
 

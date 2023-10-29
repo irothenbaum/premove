@@ -17,6 +17,7 @@
 /**
  * @typedef {Object} SessionContextData
  * @property {Object<string, DailyProgress>} progress // keyed by date string
+ * @property {Object<string, SeriesProgress>} series // keyed by seed
  */
 
 /**
@@ -32,4 +33,11 @@
  * @property {number} attempts
  * @property {boolean} solved
  * @property {Array<Square>} moves
+ */
+
+/**
+ * @typedef {Object} SeriesProgress
+ * @property {number} level
+ * @property {number} score
+ * @property {number} seed
  */

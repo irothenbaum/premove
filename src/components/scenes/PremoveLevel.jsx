@@ -171,8 +171,10 @@ function PremoveLevel(props) {
 
   const handleAnimationComplete = () => {
     if (gameOver === WIN) {
-      props.onWin(moves)
-    } else {
+      if (typeof props.onWin === 'function') {
+        props.onWin(moves)
+      }
+    } else if (typeof props.onLose === 'function') {
       props.onLose(moves)
     }
     setGameOver(null)
@@ -243,7 +245,10 @@ function PremoveLevel(props) {
 
     setHoveringPiece(null)
     setIsShowingMoves(true)
-    props.onSubmit(moves)
+
+    if (typeof props.onSubmit === 'function') {
+      props.onSubmit(moves)
+    }
 
     const progressMove = () => {
       setRevealingMoveIndex(i => {

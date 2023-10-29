@@ -5,6 +5,7 @@ import {constructClassString} from '../utilities'
 import Icon, {CHESS} from './utility/Icon'
 import ChessPiece from './elements/ChessPiece'
 import {PIECE_KNIGHT} from '../constants/chess'
+import PropTypes from 'prop-types'
 
 const BOOT_TIME = 3000
 const FADE_DURATION = 1000
@@ -15,7 +16,7 @@ function BootLoader(props) {
   const [isFading, setIsFading] = useState(false)
 
   useEffect(() => {
-    setIsReady(false)
+    setIsReady(true)
   }, [])
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function BootLoader(props) {
         fading: isFading,
         ready: isReady,
       })}>
-      <div className="boot-loader-content">
+      <div className="boot-loader-content" onClick={props.onPlayInfinite}>
         <ChessPiece type={PIECE_KNIGHT} />
         <h1>PREMOVE</h1>
       </div>
@@ -53,6 +54,8 @@ function BootLoader(props) {
   )
 }
 
-BootLoader.propTypes = {}
+BootLoader.propTypes = {
+  onPlayInfinite: PropTypes.func,
+}
 
 export default BootLoader

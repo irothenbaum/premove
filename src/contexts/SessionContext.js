@@ -3,6 +3,7 @@ const SESSION_CACHE_KEY = 'premove-session'
 
 export const DefaultSession = {
   progress: {},
+  series: {},
   hasReadRules: false,
 }
 

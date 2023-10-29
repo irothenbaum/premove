@@ -1,9 +1,15 @@
 import './App.scss'
-import React from 'react'
+import React, {useState} from 'react'
 import PremoveGameDaily from './components/PremoveGameDaily'
+import PremoveGameSeries from './components/PremoveGameSeries'
 
 function App() {
-  return <PremoveGameDaily />
+  const [playInfinite, setPlayInfinite] = useState(true)
+  return playInfinite ? (
+    <PremoveGameSeries />
+  ) : (
+    <PremoveGameDaily onPlayInfinite={() => setPlayInfinite(true)} />
+  )
 }
 
 export default App
