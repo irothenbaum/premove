@@ -63,7 +63,6 @@ function PremoveGameSeries(props) {
       value={{
         series: session.series[seed],
       }}>
-      <BootLoader />
       <div className="premove-game-daily">
         <div className="hud-container">
           <SeriesHUD

@@ -4,7 +4,7 @@ import PremoveGameDaily from './components/PremoveGameDaily'
 import PremoveGameSeries from './components/PremoveGameSeries'
 
 function App() {
-  const [playInfinite, setPlayInfinite] = useState(true)
+  const [playInfinite, setPlayInfinite] = useState(false)
   return playInfinite ? (
     <PremoveGameSeries />
   ) : (

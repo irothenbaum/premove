@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import './BootLoader.scss'
 import useDoOnceTimer from '../hooks/useDoOnceTimer'
 import {constructClassString} from '../utilities'
-import Icon, {CHESS} from './utility/Icon'
+import Icon, {CHESS, KING} from './utility/Icon'
 import ChessPiece from './elements/ChessPiece'
 import {PIECE_KNIGHT} from '../constants/chess'
 import PropTypes from 'prop-types'
@@ -16,7 +16,7 @@ function BootLoader(props) {
   const [isFading, setIsFading] = useState(false)
 
   useEffect(() => {
-    setIsReady(true)
+    setIsReady(false)
   }, [])
 
   useEffect(() => {
@@ -46,9 +46,14 @@ function BootLoader(props) {
         fading: isFading,
         ready: isReady,
       })}>
-      <div className="boot-loader-content" onClick={props.onPlayInfinite}>
+      <div className="boot-loader-content">
         <ChessPiece type={PIECE_KNIGHT} />
         <h1>PREMOVE</h1>
+        <Icon
+          className="easter-egg"
+          icon={KING}
+          onClick={props.onPlayInfinite}
+        />
       </div>
     </div>
   )

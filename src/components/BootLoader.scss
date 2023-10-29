@@ -47,4 +47,14 @@ $strokeThickness: 12px;
       @include all.shadow(20px, all.$shadow)
     }
   }
+
+  .easter-egg {
+    position: absolute;
+    top: all.$spaceMedium;
+    right: all.$spaceMedium;
+    opacity: 0.2;
+    color: all.$nearBlack;
+    cursor: pointer;
+    font-size: all.$fontSize1
+  }
 }
