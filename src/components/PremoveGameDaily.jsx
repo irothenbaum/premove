@@ -83,7 +83,7 @@ function PremoveGameDaily(props) {
       // TODO: would be nice to show Share Results or something
     } else {
       // move to next difficulty
-      setDifficulty(DIFFICULTY_ORDER.index(difficulty) + 1)
+      setDifficulty(DIFFICULTY_ORDER[DIFFICULTY_ORDER.index(difficulty) + 1])
     }
   }
 
